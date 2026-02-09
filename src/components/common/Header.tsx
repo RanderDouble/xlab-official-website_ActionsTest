@@ -1,4 +1,7 @@
+"use client";
+
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import type { NavItem } from "@/types";
 
 const navItems: NavItem[] = [
@@ -18,28 +21,44 @@ const navItems: NavItem[] = [
 ];
 
 export function Header() {
+  const pathname = usePathname();
+
+  const isActive = (href: string) => {
+    if (href === "/") {
+      return pathname === "/";
+    }
+    return pathname.startsWith(href);
+  };
+
   return (
     <header className="w-full flex flex-col items-center">
-      <div className="w-full bg-slate-100">
-        <div className="max-w-7xl mx-auto px-4 md:px-8">
-          <div className="h-10 border border-slate-300 rounded-md my-3 flex items-center justify-center text-sm text-gray-600">
-            X-Share知识共享
-          </div>
-        </div>
-      </div>
-
       <div className="w-full">
         <div className="max-w-7xl mx-auto px-4 md:px-8">
-          <div className="h-20 bg-white border border-slate-300 rounded-md flex justify-between items-center px-4 md:px-6">
-            <div className="w-[200px] h-[60px] bg-purple-100 text-purple-700 flex items-center justify-center text-sm rounded">
-              logo
+          <div className="h-20 bg-white flex justify-between items-center px-4 md:px-6">
+            <div className="flex items-center gap-4">
+              <img
+                src="/homepage/Logo.svg"
+                alt="Logo"
+                className="w-8 h-8 md:w-10 md:h-10"
+              />
+              <img
+                src="/homepage/Name.svg"
+                alt="Name"
+                className="w-40 h-6 md:w-48 md:h-8"
+              />
             </div>
 
-            <nav className="flex gap-8 items-center text-gray-700">
+            <nav className="flex-1 flex gap-8 items-center text-gray-700 justify-end">
               {navItems.map((item) =>
                 item.children ? (
-                  <div key={item.label} className="group relative">
-                    <Link className="cursor-pointer hover:text-blue-600" href={item.href}>
+                  <div
+                    key={item.label}
+                    className="group relative h-full flex items-center"
+                  >
+                    <Link
+                      className={`cursor-pointer hover:text-blue-600 border-b-2 ${isActive(item.href) ? "text-blue-600 border-blue-600" : "border-transparent"}`}
+                      href={item.href}
+                    >
                       {item.label}
                     </Link>
                     <div className="hidden group-hover:block absolute top-full left-0 bg-white border shadow-md z-50 min-w-[150px]">
@@ -47,7 +66,7 @@ export function Header() {
                         {item.children.map((child) => (
                           <Link
                             key={child.label}
-                            className="px-4 py-2 text-sm text-gray-700 hover:text-blue-600 hover:bg-slate-50"
+                            className={`px-4 py-2 text-sm text-gray-700 hover:text-blue-600 hover:bg-slate-50 ${isActive(child.href) ? "text-blue-600 bg-slate-50" : ""}`}
                             href={child.href}
                           >
                             {child.label}
@@ -57,24 +76,25 @@ export function Header() {
                     </div>
                   </div>
                 ) : (
-                  <Link key={item.label} className="cursor-pointer hover:text-blue-600" href={item.href}>
-                    {item.label}
-                  </Link>
-                )
+                  <div key={item.label} className="h-full flex items-center">
+                    <Link
+                      className={`cursor-pointer hover:text-blue-600 border-b-2 ${isActive(item.href) ? "text-blue-600 border-blue-600" : "border-transparent"}`}
+                      href={item.href}
+                    >
+                      {item.label}
+                    </Link>
+                  </div>
+                ),
               )}
             </nav>
 
-            <div className="flex flex-col items-end gap-2">
-              <div className="flex items-center gap-4 text-sm text-gray-600">
-                <a className="hover:text-blue-600" href="https://www.zju.edu.cn/" target="_blank" rel="noreferrer">
-                  浙江大学官网
-                </a>
-                <a className="hover:text-blue-600" href="#" target="_self" rel="noreferrer">
-                  活动专区
-                </a>
-              </div>
-              <div className="bg-purple-100 px-6 py-1 rounded-full text-sm text-gray-500">搜索栏</div>
-            </div>
+            <img
+              src="/homepage/XShare.svg"
+              alt="XShare"
+              width="160"
+              height="160"
+              className="cursor-pointer ml-8 -mt-1"
+            />
           </div>
         </div>
       </div>
