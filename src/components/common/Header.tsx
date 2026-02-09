@@ -37,12 +37,12 @@ export function Header() {
           <div className="h-20 bg-white flex justify-between items-center px-4 md:px-6">
             <div className="flex items-center gap-4">
               <img
-                src="/homepage/Logo.svg"
+                src="/assets/header/Logo.svg"
                 alt="Logo"
                 className="w-8 h-8 md:w-10 md:h-10"
               />
               <img
-                src="/homepage/Name.svg"
+                src="/assets/header/Name.svg"
                 alt="Name"
                 className="w-40 h-6 md:w-48 md:h-8"
               />
@@ -89,7 +89,7 @@ export function Header() {
             </nav>
 
             <img
-              src="/homepage/XShare.svg"
+              src="/assets/header/XShare.svg"
               alt="XShare"
               width="160"
               height="160"
