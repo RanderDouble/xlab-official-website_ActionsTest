@@ -1,3 +1,5 @@
+import type { NewsItem } from "@/types";
+
 export const ABOUT_Intro = {
   whoWeAre: "浙江大学启真交叉学科创新创业实验室成立于...",
   mission: "实验室致力于汇聚最活跃的创新人才...",
@@ -231,5 +233,74 @@ export const TESTIMONIALS = [
     content: "这里的每一次协作都让我更接近未来...",
     author: "王五",
     role: "项目负责人",
+  },
+];
+
+// 首页轮播数据
+export const HOME_BANNERS = [
+  {
+    id: 1,
+    label: "Banner 1",
+    link: "#",
+    imageUrl: "/assets/home/tmp/banner.svg",
+  },
+  {
+    id: 2,
+    label: "Banner 2",
+    link: "#",
+    imageUrl: "/assets/home/tmp/Frame 101.svg",
+  },
+  {
+    id: 3,
+    label: "Banner 3",
+    link: "#",
+    imageUrl: "/assets/home/tmp/banner.svg",
+  },
+  {
+    id: 4,
+    label: "Banner 4",
+    link: "#",
+    imageUrl: "/assets/home/tmp/Frame 101.svg",
+  },
+];
+
+// 首页新闻列表
+export const HOME_NEWS_LIST: NewsItem[] = [
+  {
+    id: "n1",
+    title: "实验室动态新闻标题占位 01",
+    date: "2026-02-01",
+    type: "text",
+  },
+  {
+    id: "n2",
+    title: "实验室动态新闻标题占位 02",
+    date: "2026-01-28",
+    type: "text",
+  },
+];
+
+// 首页图片新闻
+export const HOME_NEWS_IMAGES: NewsItem[] = [
+  {
+    id: "i1",
+    title: "图片新闻占位 01",
+    date: "2026-02-01",
+    type: "image",
+    imageUrl: "https://placehold.co/320x200",
+  },
+  {
+    id: "i2",
+    title: "图片新闻占位 02",
+    date: "2026-01-25",
+    type: "image",
+    imageUrl: "https://placehold.co/320x200",
+  },
+  {
+    id: "i3",
+    title: "图片新闻占位 03",
+    date: "2026-01-10",
+    type: "image",
+    imageUrl: "https://placehold.co/320x200",
   },
 ];

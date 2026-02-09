@@ -1,93 +1,15 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import type { NewsItem } from "@/types";
-
-const banners = [
-  {
-    id: 1,
-    label: "Banner 1",
-    link: "#",
-    imageUrl: "/assets/home/tmp/banner.svg",
-  },
-  {
-    id: 2,
-    label: "Banner 2",
-    link: "#",
-    imageUrl: "/assets/home/tmp/Frame 101.svg",
-  },
-  {
-    id: 3,
-    label: "Banner 3",
-    link: "#",
-    imageUrl: "/assets/home/tmp/banner.svg",
-  },
-  {
-    id: 4,
-    label: "Banner 4",
-    link: "#",
-    imageUrl: "/assets/home/tmp/Frame 101.svg",
-  },
-];
-
-const newsList: NewsItem[] = [
-  {
-    id: "n1",
-    title: "实验室动态新闻标题占位 01",
-    date: "2026-02-01",
-    type: "text",
-  },
-  {
-    id: "n2",
-    title: "实验室动态新闻标题占位 02",
-    date: "2026-01-28",
-    type: "text",
-  },
-  // {
-  //   id: "n3",
-  //   title: "实验室动态新闻标题占位 03",
-  //   date: "2026-01-20",
-  //   type: "text",
-  // },
-  // {
-  //   id: "n4",
-  //   title: "实验室动态新闻标题占位 04",
-  //   date: "2026-01-12",
-  //   type: "text",
-  // },
-];
-
-const newsImages: NewsItem[] = [
-  {
-    id: "i1",
-    title: "图片新闻占位 01",
-    date: "2026-02-01",
-    type: "image",
-    imageUrl: "https://placehold.co/320x200",
-  },
-  {
-    id: "i2",
-    title: "图片新闻占位 02",
-    date: "2026-01-25",
-    type: "image",
-    imageUrl: "https://placehold.co/320x200",
-  },
-  {
-    id: "i3",
-    title: "图片新闻占位 03",
-    date: "2026-01-10",
-    type: "image",
-    imageUrl: "https://placehold.co/320x200",
-  },
-];
+import { HOME_BANNERS, HOME_NEWS_LIST, HOME_NEWS_IMAGES } from "@/lib/data";
 
 export function HomeBanner() {
   // 1. 构造扩展数组： [Last, ...Original, First]
   // 这样当滑到最后一张的克隆体时，我们可以偷偷切回第一张
   const extendedBanners = [
-    { ...banners[banners.length - 1], id: "clone-last" },
-    ...banners,
-    { ...banners[0], id: "clone-first" },
+    { ...HOME_BANNERS[HOME_BANNERS.length - 1], id: "clone-last" },
+    ...HOME_BANNERS,
+    { ...HOME_BANNERS[0], id: "clone-first" },
   ];
 
   // 初始索引为 1 (因为索引 0 现在是克隆的最后一张)
@@ -175,6 +97,10 @@ export function HomeBanner() {
     // 因为数组头部加了一个克隆元素，所以实际索引是 originalIndex + 1
     setCurrentIndex(originalIndex + 1);
   };
+
+  const banners = HOME_BANNERS;
+  const newsList = HOME_NEWS_LIST;
+  const newsImages = HOME_NEWS_IMAGES;
 
   return (
     <section className="w-full">
