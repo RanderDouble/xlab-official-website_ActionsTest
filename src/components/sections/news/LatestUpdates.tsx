@@ -8,7 +8,7 @@ export function LatestUpdates() {
         <NewsSectionHeader
           title="最新发布"
           subtitle="Latest Release"
-          href="/news/list?category=latest"
+          href="/news/list"
         />
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-9 justify-items-center">
