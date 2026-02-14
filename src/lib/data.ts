@@ -25,53 +25,104 @@ export interface ActivityItem {
   date: string;
   status: ActivityStatus;
   imageUrl: string;
+  ctaLabel: string;
+  link: string;
 }
 
 export const ACTIVITIES: ActivityItem[] = [
   {
     id: "1",
-    title: "AI Hackathon Tour",
-    date: "2025.05.20",
+    title: "AI Hackathon2026高校联赛",
+    date: "2026/2/9",
     status: "active",
-    imageUrl: "/images/placeholder-square.jpg",
+    imageUrl: "",
+    ctaLabel: "立即报名",
+    link: "/news/activity/1",
   },
   {
     id: "2",
-    title: "文广",
-    date: "2024.12.10",
+    title: "AI Hackathon2026高校联赛",
+    date: "2026/2/9",
     status: "ended",
-    imageUrl: "/images/placeholder-square.jpg",
+    imageUrl: "",
+    ctaLabel: "活动截止",
+    link: "/news/activity/2",
   },
   {
     id: "3",
-    title: "创新训练营",
-    date: "2024.10.18",
+    title: "AI Hackathon2026高校联赛",
+    date: "2026/2/9",
     status: "active",
-    imageUrl: "/images/placeholder-square.jpg",
+    imageUrl: "",
+    ctaLabel: "立即报名",
+    link: "/news/activity/3",
   },
 ];
 
 export const LATEST_NEWS = {
   featured: [
-    { id: 1, title: "新闻标题示例1", image: "/images/placeholder-wide.jpg" },
-    { id: 2, title: "新闻标题示例2", image: "/images/placeholder-wide.jpg" },
-    { id: 3, title: "新闻标题示例3", image: "/images/placeholder-wide.jpg" },
-    { id: 4, title: "新闻标题示例4", image: "/images/placeholder-wide.jpg" },
+    {
+      id: 1,
+      title: "X-Lab创新案例登上《教育家》",
+      summary: "三大学生创新团队的实践案例，生动展现了X-Lab在AI时代培育创新人才的显著成效。",
+      image: "",
+      category: "教育",
+      date: "2026/2/5",
+    },
+    {
+      id: 2,
+      title: "X-Lab创新案例登上《教育家》",
+      summary: "三大学生创新团队的实践案例，生动展现了X-Lab在AI时代培育创新人才的显著成效。",
+      image: "",
+      category: "教育",
+      date: "2026/2/5",
+    },
+    {
+      id: 3,
+      title: "X-Lab创新案例登上《教育家》",
+      summary: "三大学生创新团队的实践案例，生动展现了X-Lab在AI时代培育创新人才的显著成效。",
+      image: "",
+      category: "教育",
+      date: "2026/2/5",
+    },
+    {
+      id: 4,
+      title: "X-Lab创新案例登上《教育家》",
+      summary: "三大学生创新团队的实践案例，生动展现了X-Lab在AI时代培育创新人才的显著成效。",
+      image: "",
+      category: "教育",
+      date: "2026/2/5",
+    },
   ],
   list: [
-    { id: 5, title: "新闻名示例A", date: "2024-01-01" },
-    { id: 6, title: "新闻名示例B", date: "2023-12-16" },
-    { id: 7, title: "新闻名示例C", date: "2023-11-03" },
+    {
+      id: 5,
+      title: "X-Lab创新案例登上《教育家》这里还是占位占位占位占位占位占位占位",
+      summary: "XX教授发表文章于XX报这是一条新闻放在这里占位占位占位",
+      date: "2026年01月02",
+    },
+    {
+      id: 6,
+      title: "X-Lab创新案例登上《教育家》这里还是占位占位占位占位占位占位占位",
+      summary: "XX教授发表文章于XX报这是一条新闻放在这里占位占位占位",
+      date: "2026年01月02",
+    },
+    {
+      id: 7,
+      title: "X-Lab创新案例登上《教育家》这里还是占位占位占位占位占位占位占位",
+      summary: "XX教授发表文章于XX报这是一条新闻放在这里占位占位占位",
+      date: "2026年01月02",
+    },
   ],
 };
 
 export const MEDIA_QUOTES = [
-  { id: 1, content: "这是一个非常创新的实验室...", mediaName: "36Kr", logo: "" },
-  { id: 2, content: "X-Lab展现了惊人的活力...", mediaName: "ZJU News", logo: "" },
-  { id: 3, content: "交叉创新成果令人期待...", mediaName: "人民网", logo: "" },
-  { id: 4, content: "青年创新生态的样板...", mediaName: "新华网", logo: "" },
-  { id: 5, content: "产学研合作的典范案例...", mediaName: "澎湃新闻", logo: "" },
-  { id: 6, content: "跨学科人才培养的新尝试...", mediaName: "腾讯新闻", logo: "" },
+  { id: 1, content: "“浙江大学本科生陈奕好与同伴将灵光一闪的点子，转化为具有社会价值的科技产品……”", mediaName: "人民日报", date: "2025/10/17", logo: "" },
+  { id: 2, content: "“浙江大学本科生陈奕好与同伴将灵光一闪的点子，转化为具有社会价值的科技产品……”", mediaName: "人民日报", date: "2025/10/17", logo: "" },
+  { id: 3, content: "“浙江大学本科生陈奕好与同伴将灵光一闪的点子，转化为具有社会价值的科技产品……”", mediaName: "人民日报", date: "2025/10/17", logo: "" },
+  { id: 4, content: "“浙江大学本科生陈奕好与同伴将灵光一闪的点子，转化为具有社会价值的科技产品……”", mediaName: "人民日报", date: "2025/10/17", logo: "" },
+  { id: 5, content: "“浙江大学本科生陈奕好与同伴将灵光一闪的点子，转化为具有社会价值的科技产品……”", mediaName: "人民日报", date: "2025/10/17", logo: "" },
+  { id: 6, content: "“浙江大学本科生陈奕好与同伴将灵光一闪的点子，转化为具有社会价值的科技产品……”", mediaName: "人民日报", date: "2025/10/17", logo: "" },
 ];
 
 export const RESEARCH_NEWS = [
