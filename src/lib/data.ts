@@ -35,7 +35,7 @@ export const ACTIVITIES: ActivityItem[] = [
     title: "AI Hackathon2026高校联赛",
     date: "2026/2/9",
     status: "active",
-    imageUrl: "",
+    imageUrl: "/assets/tmp/act.png",
     ctaLabel: "立即报名",
     link: "/news/activity/1",
   },
@@ -44,7 +44,7 @@ export const ACTIVITIES: ActivityItem[] = [
     title: "AI Hackathon2026高校联赛",
     date: "2026/2/9",
     status: "ended",
-    imageUrl: "",
+    imageUrl: "/assets/tmp/act.png",
     ctaLabel: "活动截止",
     link: "/news/activity/2",
   },
@@ -53,7 +53,7 @@ export const ACTIVITIES: ActivityItem[] = [
     title: "AI Hackathon2026高校联赛",
     date: "2026/2/9",
     status: "active",
-    imageUrl: "",
+    imageUrl: "/assets/tmp/act.png",
     ctaLabel: "立即报名",
     link: "/news/activity/3",
   },
@@ -64,32 +64,36 @@ export const LATEST_NEWS = {
     {
       id: 1,
       title: "X-Lab创新案例登上《教育家》",
-      summary: "三大学生创新团队的实践案例，生动展现了X-Lab在AI时代培育创新人才的显著成效。",
-      image: "",
+      summary:
+        "三大学生创新团队的实践案例，生动展现了X-Lab在AI时代培育创新人才的显著成效。",
+      image: "/assets/tmp/late.png",
       category: "教育",
       date: "2026/2/5",
     },
     {
       id: 2,
       title: "X-Lab创新案例登上《教育家》",
-      summary: "三大学生创新团队的实践案例，生动展现了X-Lab在AI时代培育创新人才的显著成效。",
-      image: "",
+      summary:
+        "三大学生创新团队的实践案例，生动展现了X-Lab在AI时代培育创新人才的显著成效。",
+      image: "/assets/tmp/late.png",
       category: "教育",
       date: "2026/2/5",
     },
     {
       id: 3,
       title: "X-Lab创新案例登上《教育家》",
-      summary: "三大学生创新团队的实践案例，生动展现了X-Lab在AI时代培育创新人才的显著成效。",
-      image: "",
+      summary:
+        "三大学生创新团队的实践案例，生动展现了X-Lab在AI时代培育创新人才的显著成效。",
+      image: "/assets/tmp/late.png",
       category: "教育",
       date: "2026/2/5",
     },
     {
       id: 4,
       title: "X-Lab创新案例登上《教育家》",
-      summary: "三大学生创新团队的实践案例，生动展现了X-Lab在AI时代培育创新人才的显著成效。",
-      image: "",
+      summary:
+        "三大学生创新团队的实践案例，生动展现了X-Lab在AI时代培育创新人才的显著成效。",
+      image: "/assets/tmp/late.png",
       category: "教育",
       date: "2026/2/5",
     },
@@ -315,43 +319,58 @@ export const HOME_BANNERS = [
   },
 ];
 
-// 首页新闻列表
-export const HOME_NEWS_LIST: NewsItem[] = [
+export interface HomeLabNewsItem {
+  id: string;
+  title: string;
+  date: string;
+  summary: string;
+  imageUrl: string;
+}
+
+export const HOME_LAB_NEWS: HomeLabNewsItem[] = [
   {
-    id: "n1",
-    title: "实验室动态新闻标题占位 01",
-    date: "2026-02-01",
-    type: "text",
+    id: "ln1",
+    title: "X-Lab举行跨年团建",
+    date: "2026年01月02",
+    summary: "2025年的最后一天，喇叭们前往天台进行一个团建占位占位占位……",
+    imageUrl: "/assets/tmp/占位图1.png",
   },
   {
-    id: "n2",
-    title: "实验室动态新闻标题占位 02",
-    date: "2026-01-28",
-    type: "text",
+    id: "ln2",
+    title: "新闻标题标题标题标题标题标题标题题标题标题...",
+    date: "2026年01月02",
+    summary: "XX教授发表文章于XX报这是一条新闻放在这里占位占位占位",
+    imageUrl: "/assets/tmp/占位图1.png",
+  },
+  {
+    id: "ln3",
+    title: "新闻标题标题标题标题标题标题标题",
+    date: "2026年01月02",
+    summary: "XX教授发表文章于XX报这是一条新闻放在这里占位占位占位",
+    imageUrl: "/assets/tmp/占位图1.png",
+  },
+  {
+    id: "ln4",
+    title: "新闻标题标题标题标题标题",
+    date: "2026年01月02",
+    summary: "XX教授发表文章于XX报这是一条新闻放在这里占位占位占位",
+    imageUrl: "/assets/tmp/占位图1.png",
   },
 ];
 
-// 首页图片新闻
-export const HOME_NEWS_IMAGES: NewsItem[] = [
-  {
-    id: "i1",
-    title: "图片新闻占位 01",
-    date: "2026-02-01",
-    type: "image",
-    imageUrl: "https://placehold.co/320x200",
-  },
-  {
-    id: "i2",
-    title: "图片新闻占位 02",
-    date: "2026-01-25",
-    type: "image",
-    imageUrl: "https://placehold.co/320x200",
-  },
-  {
-    id: "i3",
-    title: "图片新闻占位 03",
-    date: "2026-01-10",
-    type: "image",
-    imageUrl: "https://placehold.co/320x200",
-  },
-];
+// 兼容旧结构
+export const HOME_NEWS_LIST: NewsItem[] = HOME_LAB_NEWS.map((item) => ({
+  id: item.id,
+  title: item.title,
+  date: item.date,
+  type: "text",
+  imageUrl: item.imageUrl,
+}));
+
+export const HOME_NEWS_IMAGES: NewsItem[] = HOME_LAB_NEWS.map((item) => ({
+  id: item.id,
+  title: item.title,
+  date: item.date,
+  type: "image",
+  imageUrl: item.imageUrl,
+}));

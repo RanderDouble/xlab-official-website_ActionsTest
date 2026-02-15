@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { HOME_BANNERS, HOME_NEWS_LIST, HOME_NEWS_IMAGES } from "@/lib/data";
+import { HOME_BANNERS } from "@/lib/data";
 
 export function HomeBanner() {
   // 1. 构造扩展数组： [Last, ...Original, First]
@@ -99,12 +99,9 @@ export function HomeBanner() {
   };
 
   const banners = HOME_BANNERS;
-  const newsList = HOME_NEWS_LIST;
-  const newsImages = HOME_NEWS_IMAGES;
-
   return (
     <section className="w-full">
-      <div className="w-full aspect-video bg-white relative overflow-hidden">
+      <div className="relative w-full overflow-hidden bg-white aspect-[1320/567]">
         <div
           className={`flex h-full ${
             // 关键：根据状态决定是否添加 transition 类
@@ -138,16 +135,16 @@ export function HomeBanner() {
         >
           {/* 按钮图标保持不变 */}
           <span className="sr-only">上一张</span>
-          <span className="relative block w-24 h-24">
+          <span className="relative flex h-24 w-24 items-center justify-center">
             <img
               src="/assets/home/banner/LJumpDefault.svg"
               alt=""
-              className="w-24 h-24 transition-opacity duration-200 group-hover:opacity-0 group-focus-visible:opacity-0"
+              className="h-10 w-10 transition-opacity duration-200 group-hover:opacity-0 group-focus-visible:opacity-0"
             />
             <img
               src="/assets/home/banner/LJumpHighlight.svg"
               alt=""
-              className="w-24 h-24 absolute inset-0 opacity-0 transition-opacity duration-200 group-hover:opacity-100 group-focus-visible:opacity-100"
+              className="absolute inset-0 m-auto h-10 w-10 opacity-0 transition-opacity duration-200 group-hover:opacity-100 group-focus-visible:opacity-100"
             />
           </span>
         </button>
@@ -161,16 +158,16 @@ export function HomeBanner() {
         >
           {/* 按钮图标保持不变 */}
           <span className="sr-only">下一张</span>
-          <span className="relative block w-24 h-24">
+          <span className="relative flex h-24 w-24 items-center justify-center">
             <img
               src="/assets/home/banner/RJumpDefault.svg"
               alt=""
-              className="w-24 h-24 transition-opacity duration-200 group-hover:opacity-0 group-focus-visible:opacity-0"
+              className="h-10 w-10 transition-opacity duration-200 group-hover:opacity-0 group-focus-visible:opacity-0"
             />
             <img
               src="/assets/home/banner/RJumpHighlight.svg"
               alt=""
-              className="w-24 h-24 absolute inset-0 opacity-0 transition-opacity duration-200 group-hover:opacity-100 group-focus-visible:opacity-100"
+              className="absolute inset-0 m-auto h-10 w-10 opacity-0 transition-opacity duration-200 group-hover:opacity-100 group-focus-visible:opacity-100"
             />
           </span>
         </button>
@@ -199,48 +196,6 @@ export function HomeBanner() {
               />
             );
           })}
-        </div>
-      </div>
-
-      <div className="max-w-7xl mx-auto px-4 md:px-8 py-10">
-        {/* 新闻列表部分保持不变，省略以节省空间，直接使用原代码即可 */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div>
-            <div className="flex items-center justify-between mb-4">
-              <h2 className="text-xl font-semibold">实验室新闻</h2>
-              <button className="text-sm bg-gray-100 px-3 py-1 rounded">
-                按时间筛选
-              </button>
-            </div>
-            <div className="h-[300px] overflow-y-auto space-y-4 pr-2">
-              {newsList.map((item) => (
-                <div key={item.id} className="bg-white border rounded p-4">
-                  <div className="text-sm text-gray-500">{item.date}</div>
-                  <div className="text-base text-gray-800 mt-1">
-                    {item.title}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          <div className="h-[300px] overflow-x-auto flex flex-nowrap">
-            {newsImages.map((item) => (
-              <div key={item.id} className="min-w-full pr-4">
-                <div className="h-full bg-white border rounded overflow-hidden">
-                  <div className="w-full h-[200px] bg-gray-200 flex items-center justify-center text-xs text-gray-500">
-                    image
-                  </div>
-                  <div className="p-3">
-                    <div className="text-sm text-gray-500">{item.date}</div>
-                    <div className="text-base text-gray-800 mt-1">
-                      {item.title}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
         </div>
       </div>
     </section>

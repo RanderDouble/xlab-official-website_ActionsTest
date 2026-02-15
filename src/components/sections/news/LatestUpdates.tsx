@@ -2,6 +2,13 @@ import { LATEST_NEWS } from "@/lib/data";
 import { NewsSectionHeader } from "@/components/sections/news/NewsSectionHeader";
 
 export function LatestUpdates() {
+  const resolveImageSrc = (src: string) => {
+    if (src.startsWith("/public/")) {
+      return src.replace("/public", "");
+    }
+    return src;
+  };
+
   return (
     <section className="w-full bg-white">
       <div className="max-w-[1320px] mx-auto px-4 md:px-8 lg:px-[60px] py-10 space-y-4">
@@ -17,10 +24,14 @@ export function LatestUpdates() {
               key={item.id}
               className="bg-white rounded-[10px] overflow-hidden border border-[#f3f3f3] shadow-[0px_0px_16px_rgba(79,79,79,0.08)] h-[384px] w-full max-w-[300px] relative"
             >
-              <div
-                className="absolute inset-x-0 top-0 h-[224px] bg-[#f3f3f3]"
-                aria-hidden="true"
-              />
+              <div className="absolute inset-x-0 top-0 h-[224px] overflow-hidden bg-[#f3f3f3]">
+                <img
+                  src={resolveImageSrc(item.image)}
+                  alt={item.title}
+                  className="h-full w-full object-cover object-top"
+                  loading="lazy"
+                />
+              </div>
               <div className="absolute inset-x-0 top-[224px] h-[160px] px-2 pt-3 pb-2 border-t border-[#f3f3f3] relative">
                 <div className="text-[15px] font-semibold text-[#383838] text-left">
                   {item.title}

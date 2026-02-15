@@ -108,7 +108,7 @@ export default async function LatestListPage({
             <div className="pl-5 md:pl-8 lg:pl-10">
               <div className="flex items-center">
                 <h1 className="text-[20px] font-bold leading-none text-[#383838]">
-                  最新发布
+                  活动招募
                 </h1>
                 <span className="ml-2 text-[14px] font-bold leading-none text-[#0071ef]">
                   ▶

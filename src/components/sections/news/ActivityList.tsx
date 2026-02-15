@@ -12,9 +12,11 @@ const TRANSITION_DURATION = 500;
 
 export function ActivityList() {
   const containerRef = useRef<HTMLDivElement>(null);
+  const isResettingRef = useRef(false);
+  const isAnimatingRef = useRef(false);
   const [cardWidth, setCardWidth] = useState(0);
   const [currentIndex, setCurrentIndex] = useState(VISIBLE_COUNT); // 初始索引指向第一个真实元素
-  const [isTransitioning, setIsTransitioning] = useState(false);
+  const [isTransitioning, setIsTransitioning] = useState(true);
 
   // 1. 构造增强版克隆列表
   // 为了确保显示3张时的无缝滚动，我们需要在前后各克隆 VISIBLE_COUNT (3) 个元素
@@ -43,8 +45,6 @@ export function ActivityList() {
     };
 
     updateLayout();
-    // 稍微延迟开启各种动画，避免初始渲染闪烁
-    setTimeout(() => setIsTransitioning(true), 100);
 
     window.addEventListener("resize", updateLayout);
     return () => window.removeEventListener("resize", updateLayout);
@@ -54,54 +54,79 @@ export function ActivityList() {
   useEffect(() => {
     if (!cardWidth) return;
     const intervalId = window.setInterval(() => {
-      handleNext();
+      if (isResettingRef.current || isAnimatingRef.current) return;
+      isAnimatingRef.current = true;
+      setCurrentIndex((prev) => prev + 1);
     }, 4000);
     return () => window.clearInterval(intervalId);
-  }, [cardWidth, currentIndex]);
+  }, [cardWidth]);
 
-  // 4. 无缝重置逻辑 (瞬间回弹)
-  useEffect(() => {
-    if (!isTransitioning) return; // 只有在动画开启时才检测边界
+  const normalizeIndex = useCallback((index: number) => {
+    const offset = index - VISIBLE_COUNT;
+    const normalizedOffset =
+      ((offset % ACTIVITIES.length) + ACTIVITIES.length) % ACTIVITIES.length;
+    return VISIBLE_COUNT + normalizedOffset;
+  }, []);
 
-    // 如果滑到了最后的一组克隆 (显示的已经是第一组真实数据的内容)
-    if (currentIndex >= extendedItems.length - VISIBLE_COUNT) {
-      const timeout = setTimeout(() => {
-        setIsTransitioning(false); // 关闭动画
-        // 重置索引到真实的对应位置
-        setCurrentIndex(currentIndex - ACTIVITIES.length);
-        // 恢复动画
-        requestAnimationFrame(() => {
-          requestAnimationFrame(() => setIsTransitioning(true));
-        });
-      }, TRANSITION_DURATION);
-      return () => clearTimeout(timeout);
-    }
+  const resetToIndex = useCallback((index: number) => {
+    isResettingRef.current = true;
+    setIsTransitioning(false);
+    setCurrentIndex(index);
 
-    // 如果滑到了最前的一组克隆
-    if (currentIndex < VISIBLE_COUNT) {
-      const timeout = setTimeout(() => {
-        setIsTransitioning(false);
-        setCurrentIndex(currentIndex + ACTIVITIES.length);
-        requestAnimationFrame(() => {
-          requestAnimationFrame(() => setIsTransitioning(true));
-        });
-      }, TRANSITION_DURATION);
-      return () => clearTimeout(timeout);
-    }
-  }, [currentIndex, extendedItems.length]);
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        setIsTransitioning(true);
+        isResettingRef.current = false;
+        isAnimatingRef.current = false;
+      });
+    });
+  }, []);
+
+  const handleTrackTransitionEnd = useCallback(
+    (event: React.TransitionEvent<HTMLDivElement>) => {
+      if (event.propertyName !== "transform") return;
+
+      const lowerBound = VISIBLE_COUNT;
+      const upperBound = VISIBLE_COUNT + ACTIVITIES.length - 1;
+
+      if (currentIndex < lowerBound || currentIndex > upperBound) {
+        resetToIndex(normalizeIndex(currentIndex));
+        return;
+      }
+
+      isAnimatingRef.current = false;
+    },
+    [currentIndex, normalizeIndex, resetToIndex],
+  );
+
+  const moveBy = useCallback(
+    (delta: number) => {
+      if (!cardWidth || isResettingRef.current || isAnimatingRef.current) return;
+      isAnimatingRef.current = true;
+      setCurrentIndex((prev) => prev + delta);
+    },
+    [cardWidth],
+  );
 
   const handlePrev = useCallback(() => {
-    setCurrentIndex((prev) => prev - 1);
-  }, []);
+    moveBy(-1);
+  }, [moveBy]);
 
   const handleNext = useCallback(() => {
-    setCurrentIndex((prev) => prev + 1);
-  }, []);
+    moveBy(1);
+  }, [moveBy]);
 
   // 计算滑动的总距离
   // 步长 = 卡片宽 + 间距
   const stepSize = cardWidth + CARD_GAP;
   const translateX = currentIndex * stepSize;
+
+  const resolveImageSrc = (src: string) => {
+    if (src.startsWith("/public/")) {
+      return src.replace("/public", "");
+    }
+    return src;
+  };
 
   return (
     <section className="w-full bg-white">
@@ -143,6 +168,7 @@ export function ActivityList() {
           <div className="relative flex-1 overflow-x-hidden overflow-y-visible py-6" ref={containerRef}>
             <div
               className="flex"
+              onTransitionEnd={handleTrackTransitionEnd}
               style={{
                 padding: `0 ${EDGE_PADDING}px`,
                 gap: `${CARD_GAP}px`,
@@ -162,10 +188,14 @@ export function ActivityList() {
                   }}
                   className="h-[283px] bg-white rounded-[10px] shadow-[0px_0px_16px_rgba(79,79,79,0.11)] overflow-hidden relative flex-shrink-0"
                 >
-                  <div
-                    className="absolute inset-x-0 top-0 h-[193px] bg-[#f3f3f3]"
-                    aria-hidden="true"
-                  />
+                  <div className="absolute inset-x-0 top-0 h-[193px] overflow-hidden bg-[#f3f3f3]">
+                    <img
+                      src={resolveImageSrc(item.imageUrl)}
+                      alt={item.title}
+                      className="h-full w-full object-cover object-top"
+                      loading="lazy"
+                    />
+                  </div>
                   <div className="absolute inset-x-0 bottom-0 h-[96px] bg-white px-[14px] pt-2">
                     <div className="text-[13px] font-semibold text-[#383838] leading-[1.5]">
                       {item.title}
