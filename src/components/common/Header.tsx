@@ -39,9 +39,9 @@ export function Header() {
               {navItems.map((item) =>
                 item.children ? (
                   <div key={item.label} className="group relative">
-                    <Link className="cursor-pointer hover:text-blue-600" href={item.href}>
+                    <span className="cursor-default hover:text-blue-600">
                       {item.label}
-                    </Link>
+                    </span>
                     <div className="hidden group-hover:block absolute top-full left-0 bg-white border shadow-md z-50 min-w-[150px]">
                       <div className="flex flex-col">
                         {item.children.map((child) => (

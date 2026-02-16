@@ -11,7 +11,7 @@ export function TravelingMoments() {
             <Link
               key={item.id}
               href={item.link}
-              className={`flex flex-col border border-gray-900 rounded-lg overflow-hidden bg-white ${
+              className={`group flex flex-col border border-gray-900 rounded-lg overflow-hidden bg-white transition-transform duration-300 hover:scale-105 ${
                 index % 2 === 0 ? "translate-y-6" : "translate-y-0"
               }`}
             >
@@ -19,8 +19,8 @@ export function TravelingMoments() {
                 图
               </div>
               <div className="border-t border-gray-900 bg-purple-100/60 px-3 py-2 text-sm text-gray-800 flex items-center justify-between">
-                <span>{item.title}</span>
-                <span className="w-6 h-6 rounded-full border border-gray-900 flex items-center justify-center text-xs">
+                <span className="transition-transform duration-300 group-hover:scale-105">{item.title}</span>
+                <span className="w-6 h-6 rounded-full border border-gray-900 flex items-center justify-center text-xs transition-transform duration-300 group-hover:scale-105">
                   →
                 </span>
               </div>
@@ -33,14 +33,14 @@ export function TravelingMoments() {
             <Link
               key={item.id}
               href={item.link}
-              className="min-w-[240px] snap-start flex flex-col border border-gray-900 rounded-lg overflow-hidden bg-white"
+              className="group min-w-[240px] snap-start flex flex-col border border-gray-900 rounded-lg overflow-hidden bg-white transition-transform duration-300 hover:scale-105"
             >
               <div className="h-[180px] bg-gray-200 flex items-center justify-center text-sm text-gray-600">
                 图
               </div>
               <div className="border-t border-gray-900 bg-purple-100/60 px-3 py-2 text-sm text-gray-800 flex items-center justify-between">
-                <span>{item.title}</span>
-                <span className="w-6 h-6 rounded-full border border-gray-900 flex items-center justify-center text-xs">
+                <span className="transition-transform duration-300 group-hover:scale-105">{item.title}</span>
+                <span className="w-6 h-6 rounded-full border border-gray-900 flex items-center justify-center text-xs transition-transform duration-300 group-hover:scale-105">
                   →
                 </span>
               </div>
