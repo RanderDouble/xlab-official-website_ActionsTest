@@ -6,8 +6,8 @@ export function HomeIntro({ title, desc }: { title: string; desc: string }) {
         <div className="bg-gray-100 h-20 rounded flex-1 flex items-center justify-center text-sm text-gray-600">
           {desc}
         </div>
-        <div className="w-24 h-20 bg-purple-100 text-purple-700 flex items-center justify-center text-xs rounded">
-          Logo
+        <div className="w-24 h-20 flex items-center justify-center">
+          <img src="/assets/logo.svg" alt="" aria-hidden className="h-12 w-12" />
         </div>
       </div>
     </div>

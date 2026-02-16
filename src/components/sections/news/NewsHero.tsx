@@ -1,18 +1,42 @@
 export function NewsHero() {
   return (
-    <section className="w-full bg-sky-100">
-      <div className="max-w-7xl mx-auto px-4 md:px-8 py-16">
-        <div className="w-full flex items-center justify-center">
-          <div className="w-full md:w-[70%] bg-slate-900 text-white rounded-2xl px-6 py-10 text-center flex flex-col items-center gap-6">
-            <div className="text-3xl md:text-4xl font-semibold">2025 X-Lab 年终总结</div>
-            <div className="flex items-center w-full gap-4 text-sm text-gray-200">
-              <span className="flex-1 h-px bg-gray-500" />
-              一句话总结 —— 2025 年会图片
-              <span className="flex-1 h-px bg-gray-500" />
+    <section className="w-full bg-white">
+      <div className="max-w-[1320px] mx-auto px-4 md:px-8 lg:px-[60px] pt-8 pb-10">
+        <div className="relative w-full aspect-[1320/567] overflow-hidden rounded-2xl bg-white">
+          <img
+            alt=""
+            className="absolute inset-0 h-full w-full object-cover"
+            src="/assets/tmp/Frame%2091.svg"
+          />
+          <div className="absolute inset-x-0 top-[45%] h-[55%] bg-[rgba(1,78,122,0.24)]">
+            <div className="absolute left-[22px] top-[8%] max-w-[1114px] space-y-2">
+              <h1 className="text-[52px] font-bold text-white leading-tight">X-Lab 2025年会</h1>
+              <p className="text-[22px] font-medium text-white leading-relaxed">
+                2025年7月2日，X-Lab在xx大楼召开2025年中总结年会占位占位占位占位占位占位占位。
+              </p>
             </div>
-            <button className="bg-purple-200 text-purple-900 px-6 py-2 rounded-full cursor-pointer">
-              去看看 &gt;
-            </button>
+
+            <div className="absolute left-[22px] bottom-12">
+              <button className="inline-flex items-center gap-3 h-[52px] px-8 justify-center rounded-full text-white text-[18px] font-bold bg-gradient-to-r from-[#0071ef] to-[#149bff] hover:shadow-lg transition-shadow" style={{ fontFamily: '"PingFang SC", "Hiragino Sans GB", "Source Han Sans SC", "Microsoft YaHei UI", sans-serif' }}>
+                去看看
+                <span className="text-[18px]">&gt;</span>
+              </button>
+            </div>
+          </div>
+
+          <div className="absolute right-6 top-2">
+            <a className="flex items-center gap-2 text-[11px] font-semibold text-[#cecece] hover:text-[#0071ef]" href="/news/list">
+              查看全部
+              <span className="text-[#0071ef]">&gt;</span>
+            </a>
+          </div>
+
+
+          <div className="absolute left-[625px] top-[529px] flex items-center gap-[10px]">
+            <span className="h-[10px] w-[10px] rounded-full bg-[#0071ef]" />
+            <span className="h-[10px] w-[10px] rounded-full bg-[#cecece]" />
+            <span className="h-[10px] w-[10px] rounded-full bg-[#cecece]" />
+            <span className="h-[10px] w-[10px] rounded-full bg-[#cecece]" />
           </div>
         </div>
       </div>
