@@ -55,12 +55,11 @@ export function Header() {
                     key={item.label}
                     className="group relative h-full flex items-center"
                   >
-                    <Link
-                      className={`cursor-pointer text-[14px] font-semibold hover:text-blue-600 border-b-2 ${isActive(item.href) ? "text-blue-600 border-blue-600" : "border-transparent"}`}
-                      href={item.href}
+                    <span
+                      className={`text-[14px] font-semibold border-b-2 ${isActive(item.href) ? "text-blue-600 border-blue-600" : "border-transparent text-gray-700"}`}
                     >
                       {item.label}
-                    </Link>
+                    </span>
                     <div className="hidden group-hover:block absolute top-full left-0 bg-white border shadow-md z-50 min-w-[150px]">
                       <div className="flex flex-col">
                         {item.children.map((child) => (

@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { ResearchTeamProject, ResearchProjectContent } from "@/types/index";
+import { ResearchTeamProject } from "@/types/index";
 
 export function ResearchTeamCard({ data }: { data: ResearchTeamProject }) {
   const { themeColor, teamName, englishName, logoPath, items } = data;
@@ -59,7 +59,7 @@ export function ResearchTeamCard({ data }: { data: ResearchTeamProject }) {
         {/* 4. 项目内容列表 */}
         <div className="relative px-10 pb-12 grid grid-cols-2 gap-x-10 gap-y-12 z-10">
           {items.map((item, idx) => {
-            const isFullWidth = item.type !== 'image-only';
+            const isFullWidth = item.type === 'image-text';
 
             return (
               <div 
@@ -71,21 +71,38 @@ export function ResearchTeamCard({ data }: { data: ResearchTeamProject }) {
                   {/* 情况1 & 3：图片组件 */}
                   {(item.type === 'image-text' || item.type === 'image-only') && (
                     <div className={`${item.type === 'image-only' ? 'w-full' : 'md:w-[450px]'} relative`}>
-                      <div 
+                      {/* 渐变边框容器 */}
+                      <div
                         className="rounded-[8px] p-[2px] h-full"
                         style={{
                           background: `
-                            linear-gradient(white, white) padding-box, 
+                            linear-gradient(white, white) padding-box,
                             linear-gradient(to right, ${themeColor}, ${themeColor}) top / 100% 2px no-repeat border-box,
                             linear-gradient(to bottom, ${themeColor}, rgba(0, 0, 0, 0) 100%) border-box
-                          `, // 100% 确保渐变在线条末端完全消失，且长度受容器高度限制
+                          `,
                           border: '2px solid transparent',
                         }}
                       >
-                        <div className="relative aspect-[16/10] w-full rounded-[6px] overflow-hidden bg-gray-50 flex items-center justify-center">
-                          {item.imageUrl && (
-                            <Image src={item.imageUrl} alt="project" fill className="object-contain p-4" />
+                        {/* 内部容器：使用 flex-col 确保标题在图片上方 */}
+                        <div className="bg-white rounded-[6px] h-full flex flex-col">
+                          {/* 情况3：纯图片组件的标题现在位于边框内部 */}
+                          {item.type === 'image-only' && item.title && (
+                            <h3 className="text-[20px] md:text-[22px] font-bold text-[#383838] px-4 p-8 mb-2 pb-3">
+                              {item.title}
+                            </h3>
                           )}
+
+                          {/* 图片区域 */}
+                          <div className="relative aspect-[16/10] w-full flex-1 overflow-hidden bg-gray-50 flex items-center justify-center rounded-b-[6px]">
+                            {item.imageUrl && (
+                              <Image 
+                                src={item.imageUrl} 
+                                alt={item.title || "project image"} 
+                                fill 
+                                className="object-contain p-4" 
+                              />
+                            )}
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -99,14 +116,14 @@ export function ResearchTeamCard({ data }: { data: ResearchTeamProject }) {
                           className="rounded-[8px] p-8 h-full"
                           style={getThreeSideBorderStyle(themeColor)}
                         >
-                          <h3 className="text-[24px] font-bold text-[#383838] mb-4">{item.title}</h3>
+                          <h3 className="text-[22px] font-bold text-[#383838] mb-4">{item.title}</h3>
                           <p className="text-[#666666] leading-[35px] text-[16px] whitespace-pre-line">
                             {item.description}
                           </p>
                         </div>
                       ) : (
                         <div className="py-2">
-                          <h3 className="text-[24px] font-bold text-[#383838] mb-4">{item.title}</h3>
+                          <h3 className="text-[22px] font-bold text-[#383838] mb-4">{item.title}</h3>
                           <p className="text-[#666666] leading-[35px] text-[16px] whitespace-pre-line">
                             {item.description}
                           </p>

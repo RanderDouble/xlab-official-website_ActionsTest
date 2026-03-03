@@ -12,6 +12,14 @@ export interface NewsItem {
   imageUrl?: string;
 }
 
+export interface PartnerNewsItem {
+  id: number;
+  title: string;
+  brief: string;
+  image: string;
+  link: string;
+}
+
 export type ResearchProjectContent = {
   type: 'image-text' | 'text-only' | 'image-only';
   title?: string;

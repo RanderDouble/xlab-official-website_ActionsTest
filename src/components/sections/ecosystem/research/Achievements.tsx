@@ -1,4 +1,4 @@
-import { RESEARCH_PROJECTS, RESEARCH_ACHIEVEMENTS_BRIEF, HARDWARE_TEAM_ACHIEVEMENTS, SOFTWARE_TEAM_ACHIEVEMENTS, OPERATION_TEAM_ACHIEVEMENTS } from "@/lib/data";
+import { RESEARCH_ACHIEVEMENTS_BRIEF, HARDWARE_TEAM_ACHIEVEMENTS, SOFTWARE_TEAM_ACHIEVEMENTS, OPERATION_TEAM_ACHIEVEMENTS } from "@/lib/data";
 import { LogoWithTitle } from "@/components/shared/LogoWithTitle";
 import { ResearchTeamCard } from "./ResearchTeamCard"
 import Image from "next/image";
