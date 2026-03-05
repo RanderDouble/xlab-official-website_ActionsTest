@@ -45,12 +45,20 @@ body {
 
 .animate-marquee {
   width: max-content;
-  animation: marquee 20s linear infinite;
+  animation: marquee var(--marquee-duration, 20s) linear infinite;
+}
+
+.animate-marquee:hover {
+  animation-play-state: paused;
 }
 
 .animate-marquee-reverse {
   width: max-content;
-  animation: marquee-reverse 20s linear infinite;
+  animation: marquee-reverse var(--marquee-duration, 20s) linear infinite;
+}
+
+.animate-marquee-reverse:hover {
+  animation-play-state: paused;
 }
 
 .hide-scrollbar {
@@ -60,4 +68,30 @@ body {
 
 .hide-scrollbar::-webkit-scrollbar {
   display: none;
+}
+
+/* Custom scrollbar styles */
+.custom-scrollbar::-webkit-scrollbar {
+  height: 10px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: #E5E7EB;
+  border-radius: 5px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #6B7280;
+  border-radius: 5px;
+  min-width: 40px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #4B5563;
+}
+
+/* Firefox */
+.custom-scrollbar {
+  scrollbar-width: auto;
+  scrollbar-color: #6B7280 #E5E7EB;
 }

@@ -18,7 +18,7 @@ const resolveImageSrc = (src?: string) => {
 export function HomeEcology() {
   return (
     <section className="w-full bg-white">
-      <div className="mx-auto max-w-[1320px] px-4 pt-[52px] md:px-8 lg:px-[60px]">
+      <div className="mx-auto max-w-[1320px] px-[20px] pt-[52px]">
         <div className="flex items-start gap-3">
           <img
             src="/assets/logo.svg"
@@ -41,7 +41,7 @@ export function HomeEcology() {
           “汇聚最活跃的创新人才，以多学科力量推动交叉前沿科学研究，以工程技术基础平台助力项目落地，以创业生态孵化成果持续续提升社会福祉；打造集人才培养、交叉研究、工程平台、创业生态于一体的开放创新体系。”
         </p>
 
-        <div className="mt-[20px] grid grid-cols-2 gap-[20px] pb-[10px] lg:grid-cols-4">
+        <div className="mt-[20px] grid grid-cols-4 gap-[20px] pb-[10px]">
           {ECOLOGY_CARDS.map((card) => {
             const imageSrc = resolveImageSrc(card.imageUrl);
 

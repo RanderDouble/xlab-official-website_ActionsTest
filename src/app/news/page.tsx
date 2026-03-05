@@ -2,6 +2,7 @@ import { ActivityList } from "@/components/sections/news/ActivityList";
 import { LatestUpdates } from "@/components/sections/news/LatestUpdates";
 import { MediaCoverage } from "@/components/sections/news/MediaCoverage";
 import { NewsHero } from "@/components/sections/news/NewsHero";
+import { NEWS_HERO } from "@/lib/data";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -13,17 +14,17 @@ export default function NewsPage() {
   return (
     <div className="flex flex-col min-h-screen">
       {/* 新闻Hero区域 */}
-      <NewsHero />
-      
+      <NewsHero {...NEWS_HERO} />
+
       {/* 活动招募 */}
       <ActivityList />
-      
+
       {/* 最新发布 */}
       <LatestUpdates />
-      
+
       {/* 媒体关注 */}
       <MediaCoverage />
-      
+
       {/* 页面底部装饰 */}
       <div className="h-20 bg-gradient-to-b from-white to-gray-50" />
     </div>

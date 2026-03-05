@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useState } from "react";
 
 const DEPARTMENTS = [
   {
@@ -70,11 +70,10 @@ const DEPARTMENTS = [
 
 export function HomeTeamContainer() {
   const [selectedIndex, setSelectedIndex] = useState(0);
-  const selectedTeam = useMemo(() => DEPARTMENTS[selectedIndex], [selectedIndex]);
 
   return (
     <section className="w-full bg-[#001731] text-white">
-      <div className="w-full max-w-5xl mx-auto px-5 lg:px-14 py-16 lg:py-[72px] flex flex-col items-center">
+      <div className="w-full max-w-[1440px] mx-auto px-[56px] py-[72px] flex flex-col items-center">
         <div className="flex flex-col items-center text-center gap-2.5">
           <img
             src="/assets/about/team/OurTeamIcon.svg"
@@ -82,7 +81,9 @@ export function HomeTeamContainer() {
             className="w-10 h-10 mt-2"
           />
           <h1 className="text-3xl leading-[44px] font-bold">我们的团队</h1>
-          <h2 className="text-sm leading-[21px] font-light opacity-70">四大团队｜全员本科生｜学科交叉融合</h2>
+          <h2 className="text-sm leading-[21px] font-light opacity-70">
+            四大团队｜全员本科生｜学科交叉融合
+          </h2>
         </div>
 
         <div className="mt-6 flex flex-wrap justify-center gap-3">
@@ -93,14 +94,13 @@ export function HomeTeamContainer() {
                 key={team.id}
                 type="button"
                 className={`w-24 h-10 border-none text-white text-sm font-medium cursor-pointer transition-colors ${
-                  isSelected
-                    ? "text-white"
-                    : "bg-transparent"
+                  isSelected ? "text-white" : "bg-transparent"
                 }`}
                 style={
                   isSelected
                     ? {
-                        background: "linear-gradient(90deg, #0071ef 0%, #149bff 100%) bottom no-repeat",
+                        background:
+                          "linear-gradient(90deg, #0071ef 0%, #149bff 100%) bottom no-repeat",
                         backgroundSize: "auto 1px",
                       }
                     : {}
@@ -120,10 +120,12 @@ export function HomeTeamContainer() {
           >
             {DEPARTMENTS.map((team) => (
               <div key={team.id} className="min-w-full">
-                <div className="w-full flex flex-col-reverse lg:flex-row items-center justify-between gap-6">
-                  <div className="w-full lg:w-2/5 min-w-80 flex flex-col items-center lg:items-start gap-5 text-center lg:text-left">
-                    <div className="text-2xl leading-[35px] font-bold">{team.slogan}</div>
-                    <div className="flex gap-2.5 flex-wrap overflow-hidden pb-1.5 justify-center lg:justify-start">
+                <div className="w-full flex flex-row items-center justify-between gap-6">
+                  <div className="w-[40%] min-w-[440px] flex flex-col items-start gap-5 text-left">
+                    <div className="text-2xl leading-[35px] font-bold">
+                      {team.slogan}
+                    </div>
+                    <div className="flex gap-2.5 flex-wrap overflow-hidden pb-1.5 justify-start">
                       {team.branch.map((label, index) => (
                         <div
                           key={`${team.id}-${label}`}
@@ -138,19 +140,27 @@ export function HomeTeamContainer() {
                         </div>
                       ))}
                     </div>
-                    <p 
+                    <p
                       className="text-sm leading-[21px] opacity-70 text-justify w-full"
-                      style={{textIndent: '28px'}}
+                      style={{ textIndent: "28px" }}
                     >
                       {team.introduction}
                     </p>
                     <div>
-                      <img src={team.artTextUrl} alt="" className="h-[124px] w-auto mt-2" />
+                      <img
+                        src={team.artTextUrl}
+                        alt=""
+                        className="h-[124px] w-auto mt-2"
+                      />
                     </div>
                   </div>
 
-                  <div className="w-full lg:w-[55%] flex justify-center">
-                    <img src={team.departmentImageUrl} alt={team.name} className="w-full max-w-[600px] h-auto md:w-[300px]" />
+                  <div className="w-[55%] flex justify-center">
+                    <img
+                      src={team.departmentImageUrl}
+                      alt={team.name}
+                      className="w-full max-w-[600px] h-auto"
+                    />
                   </div>
                 </div>
               </div>

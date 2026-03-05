@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import type { Metadata } from "next";
 import { ACTIVITIES } from "@/lib/data";
 
@@ -13,31 +14,20 @@ type LatestListItem = {
   date: string;
   category: string;
   href: string;
+  imageUrl?: string;
 };
 
-const TAGS = [
-  "教育",
-  "实践",
-  "成果",
-  "教学",
-  "宣传",
-  "管理",
-  "发展",
-  "实验成果",
-];
+const listItems: LatestListItem[] = ACTIVITIES.map((source) => ({
+  id: `${source.id}`,
+  title: source.title,
+  date: source.date,
+  category: source.category || "其他",
+  href: source.link,
+  imageUrl: source.imageUrl,
+}));
 
-const listItems: LatestListItem[] = Array.from({ length: 6 }).map(
-  (_, index) => {
-    const source = ACTIVITIES[index % ACTIVITIES.length];
-    return {
-      id: `${source.id}-${index}`,
-      title: source.title,
-      date: source.date,
-      category: TAGS[index % TAGS.length],
-      href: source.link,
-    };
-  },
-);
+// 从 ACTIVITIES 中提取所有唯一的标签（过滤掉 undefined 和空字符串）
+const TAGS = Array.from(new Set(ACTIVITIES.map((a) => a.category).filter((c): c is string => Boolean(c))));
 
 function CategoryPill({
   label,
@@ -82,71 +72,76 @@ export default async function LatestListPage({
     ? listItems.filter((item) => item.category === selectedTag)
     : listItems;
 
-  // --- 关键配置调整 ---
-  // 1. 侧边栏宽度：增加到 240px (之前是 220px)，配合左侧占位，会挤压中间空间
-  const sidebarWidthClass = "lg:w-[200px]";
-  // 2. 总容器最大宽度：减小到 1000px (之前是 1100px)，进一步限制列表宽度
+  // 统一配置
+  const sidebarWidthClass = "w-[200px]";
   const mainContentMaxWidth = "max-w-[1000px]";
 
   return (
     <section className="relative min-h-screen w-full bg-[#f3f3f3] pb-20">
-      {/* 背景装饰 */}
-      <div className="pointer-events-none absolute left-[-72px] top-[220px] h-[760px] w-[420px] rounded-full bg-[radial-gradient(circle,_rgba(20,155,255,0.16),_rgba(20,155,255,0)_68%)]" />
-      <div className="pointer-events-none absolute left-[-140px] top-[520px] h-[520px] w-[520px] rounded-full bg-[radial-gradient(circle,_rgba(20,155,255,0.12),_rgba(20,155,255,0)_70%)]" />
+      {/* SVG背景图 - 宽度100%，高度不够时自动平铺 */}
+      <div
+        className="pointer-events-none absolute inset-0 w-full bg-[length:100%_auto] bg-top bg-repeat"
+        style={{ backgroundImage: "url(/assets/news/Background.svg)" }}
+      />
 
-      {/* === 顶部标题栏 === */}
+      {/* === 顶部标题栏 - 与ListPage一致：居中，灰色箭头 › === */}
       <div className="sticky top-0 z-20 w-full bg-white/95 shadow-[0px_1px_10px_1px_rgba(20,155,255,0.12)] backdrop-blur-[2px]">
-        <div className="flex justify-center px-4 md:px-6">
+        <div className="flex justify-center">
           {/* Header 左侧占位：保持与下方一致 */}
           <div
-            className={`hidden shrink-0 ${sidebarWidthClass} lg:block`}
+            className={`hidden shrink-0 ${sidebarWidthClass} block`}
             aria-hidden="true"
           />
 
           <div
-            className={`flex h-[54px] w-full ${mainContentMaxWidth} items-center`}
+            className={`flex h-[54px] w-full ${mainContentMaxWidth} items-center justify-center`}
           >
-            {/* 这里的 pl 需要与下面列表容器的 px 保持视觉对齐 */}
-            <div className="pl-5 md:pl-8 lg:pl-10">
-              <div className="flex items-center">
-                <h1 className="text-[20px] font-bold leading-none text-[#383838]">
-                  活动招募
-                </h1>
-                <span className="ml-2 text-[14px] font-bold leading-none text-[#0071ef]">
-                  ▶
-                </span>
-              </div>
+            <div className="flex items-center gap-1">
+              <h1 className="text-[20px] font-bold leading-none text-[#383838]">
+                活动招募
+              </h1>
+              <span className="text-[26px] font-normal leading-none text-[#0071ef] translate-y-[-2px]">
+                ›
+              </span>
             </div>
           </div>
         </div>
       </div>
 
       {/* === 核心布局区域 === */}
-      <div className="flex justify-center px-4 pt-8 md:px-6">
+      <div className="flex justify-center pt-8">
         {/* 1. 左侧隐形占位块 */}
         <div
-          className={`hidden shrink-0 ${sidebarWidthClass} lg:block`}
+          className={`hidden shrink-0 ${sidebarWidthClass} block`}
           aria-hidden="true"
         />
 
-        {/* 2. 中间容器 (去掉了圆角) */}
+        {/* 2. 中间容器 */}
         <div
-          className={`flex w-full ${mainContentMaxWidth} flex-col bg-white shadow-[0px_0px_26px_rgba(0,113,239,0.15)] lg:flex-row lg:bg-transparent lg:shadow-none`}
+          className={`relative flex w-full ${mainContentMaxWidth} flex-row bg-transparent`}
         >
-          {/* 左半部分：文章列表 
-             修改：移除了所有 rounded 类，保持方正
-          */}
-          <div className="flex-1 bg-white px-5 py-8 shadow-sm md:px-8 lg:px-10">
+          {/* 左半部分：文章列表 */}
+          <div className="flex-1 bg-white px-10 py-8 shadow-sm">
             <div className="min-h-[400px] space-y-8">
               {filteredItems.map((item) => (
-                <article key={item.id} className="group flex gap-5 md:gap-7">
-                  {/* 图片保持微圆角，视觉上更好看，如果这里也要方正可以把 rounded-[8px] 去掉 */}
-                  <div className="h-[120px] w-[120px] shrink-0 overflow-hidden rounded-[8px] bg-[#dff1ff] shadow-inner md:h-[160px] md:w-[200px]">
-                    <div className="h-full w-full bg-gradient-to-br from-[#e0f2ff] to-[#f0f9ff] transition-transform duration-500 group-hover:scale-105" />
+                <article key={item.id} className="group flex gap-7">
+                  {/* 图片保持微圆角 */}
+                  <div className="h-[160px] w-[200px] shrink-0 overflow-hidden rounded-[8px] bg-[#dff1ff] shadow-inner">
+                    {item.imageUrl ? (
+                      <Image
+                        src={item.imageUrl}
+                        alt={item.title}
+                        width={200}
+                        height={160}
+                        className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                      />
+                    ) : (
+                      <div className="h-full w-full bg-gradient-to-br from-[#e0f2ff] to-[#f0f9ff] transition-transform duration-500 group-hover:scale-105" />
+                    )}
                   </div>
 
                   <div className="flex min-w-0 flex-1 flex-col py-1">
-                    <h2 className="line-clamp-2 text-[17px] font-bold leading-[1.4] text-[#333] transition-colors group-hover:text-[#0071ef] md:text-[20px]">
+                    <h2 className="line-clamp-2 text-[20px] font-bold leading-[1.4] text-[#333] transition-colors group-hover:text-[#0071ef]">
                       {item.title}
                     </h2>
 
@@ -176,13 +171,10 @@ export default async function LatestListPage({
                 </article>
               ))}
 
-              {/* 空状态提示：恢复显示
-                 当 filteredItems 为空时显示 
-              */}
+              {/* 空状态提示 */}
               {filteredItems.length === 0 && (
                 <div className="flex h-full min-h-[320px] w-full items-center justify-center">
                   <div className="flex flex-col items-center gap-2 text-[#b6b6b6]">
-                    {/* 一个简单的图标，可选 */}
                     <span className="text-[32px] opacity-50">⟡</span>
                     <span className="text-[13px] font-medium tracking-wide">
                       暂无该标签内容
@@ -212,11 +204,9 @@ export default async function LatestListPage({
             )}
           </div>
 
-          {/* 右半部分：侧边栏 
-             修改：移除了 rounded 类
-          */}
+          {/* 右半部分：侧边栏 */}
           <aside
-            className={`shrink-0 border-t border-[#f5f5f5] bg-white px-6 py-8 lg:border-l lg:border-t-0 ${sidebarWidthClass}`}
+            className={`shrink-0 self-stretch border-l border-[#f5f5f5] border-r-2 border-r-[#e0e0e0] border-b-2 border-b-[#e0e0e0] bg-white px-6 py-8 shadow-sm ${sidebarWidthClass}`}
           >
             <div className="sticky top-[74px]">
               <div className="mb-5 flex items-center gap-2">

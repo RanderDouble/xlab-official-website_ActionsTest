@@ -1,28 +1,37 @@
-import { LogoWall } from "@/components/common/LogoWall";
-
 export function AboutCooperation() {
   return (
-    <section className="w-full bg-white">
-      <div className="max-w-7xl mx-auto px-4 md:px-8 py-16 space-y-10">
-        <div>
-          <h2 className="text-2xl font-semibold text-gray-800">合作生态</h2>
-          <p className="text-gray-600 mt-2">合作机制与合作院系、企业展示区占位。</p>
-        </div>
-
-        <div className="overflow-x-auto snap-x snap-mandatory">
-          <div className="flex gap-4 min-w-full">
-            {[1, 2, 3].map((item) => (
-              <div
-                key={item}
-                className="min-w-[280px] md:min-w-[360px] h-[200px] border rounded-lg bg-gray-50 flex items-center justify-center text-gray-600 snap-start"
-              >
-                Case Study {item}
-              </div>
-            ))}
+    <section className="w-full bg-white py-[80px]">
+      <div className="mx-auto w-full max-w-[1440px] px-[56px]">
+        <div className="mb-[42px] flex flex-col items-center">
+          <div className="mb-[16px]">
+            <img
+              src="/assets/header/Logo.svg"
+              alt="X-Lab Logo"
+              className="h-[66px] w-[66px]"
+            />
           </div>
+          <h2 className="text-[36px] font-bold leading-[60px] tracking-[5.4px] text-[#333333]">
+            合作机构
+          </h2>
+          <p
+            className="-mt-[4px] bg-clip-text text-[24px] font-bold leading-[60px] tracking-[1.2px] text-transparent"
+            style={{
+              backgroundImage:
+                "linear-gradient(90deg, #0071EF 0%, #149BFF 100%)",
+            }}
+          >
+            Partner Organizations
+          </p>
         </div>
 
-        <LogoWall />
+        <div className="relative">
+          <img
+            src="/assets/about/合作机构.svg"
+            alt="合作机构"
+            className="w-full"
+          />
+          <div className="absolute bottom-0 left-0 right-0 h-8 bg-white" />
+        </div>
       </div>
     </section>
   );

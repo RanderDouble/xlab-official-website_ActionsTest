@@ -1,47 +1,14 @@
 "use client";
 
-import Link from "next/link";
-import { useMemo, useState } from "react";
+import { useState, useRef, useEffect } from "react";
 
-type ResourceTab = "venue" | "digital";
+import {
+  FEATURED_MENTOR,
+  ACADEMIC_MENTORS,
+  INDUSTRY_MENTORS,
+} from "@/lib/data";
 
-const FEATURED_MENTOR = {
-  name: "邢以群",
-  roleLines: "导师称谓导师称谓导师称谓导师称谓导师称谓导师称谓",
-  imageUrl: "/assets/home/resources/邢以群.png",
-};
-
-const ACADEMIC_MENTORS = Array.from({ length: 6 }).map((_, index) => ({
-  id: `academic-${index + 1}`,
-  name: "导师姓名",
-  role: "导师称谓导师称谓",
-  imageUrl: "/assets/home/resources/导师.png",
-}));
-
-const INDUSTRY_MENTORS = Array.from({ length: 6 }).map((_, index) => ({
-  id: `industry-${index + 1}`,
-  name: "导师姓名",
-  role: "导师称谓导师称谓",
-  imageUrl: "/assets/home/resources/导师.png",
-}));
-
-const VENUE_CARDS = Array.from({ length: 4 }).map((_, index) => ({
-  id: `venue-${index + 1}`,
-  title: "X-Lab场地设备占位占位占位占位",
-  summary: "注 解 注 解 注 解 注 解 注 解 ...",
-  imageUrl: "/assets/home/resources/设备.png",
-  href: "/ecosystem/engineering",
-}));
-
-const DIGITAL_CARDS = Array.from({ length: 4 }).map((_, index) => ({
-  id: `digital-${index + 1}`,
-  title: "X-Lab数字资源占位占位占位占位",
-  summary: "注 解 注 解 注 解 注 解 注 解 ...",
-  imageUrl: "/assets/home/resources/设备.png",
-  href: "/ecosystem/research",
-}));
-
-const resolveImageSrc = (src?: string) => {
+const resolveImageSrc = (src?: string): string => {
   if (!src) return "";
   if (src.startsWith("/public/")) {
     return src.replace("/public", "");
@@ -49,91 +16,187 @@ const resolveImageSrc = (src?: string) => {
   return src;
 };
 
-function MentorCard({
-  name,
-  role,
-  imageUrl,
-}: {
-  name: string;
-  role: string;
-  imageUrl?: string;
-}) {
-  const resolvedSrc = resolveImageSrc(imageUrl);
+// =============================================================================
+// 3. 子组件区 (Sub-components)
+//    按从简单到复杂排序：AutoRail -> MentorCardSmall -> FeaturedMentorCard
+// =============================================================================
 
-  return (
-    <article className="relative h-[194px] w-[120px] shrink-0 overflow-hidden rounded-[9.711px] shadow-[0px_1.942px_1.942px_rgba(0,0,0,0.25)]">
-      {resolvedSrc ? (
-        <img
-          src={resolvedSrc}
-          alt={name}
-          className="h-full w-full object-cover object-top"
-          loading="lazy"
-        />
-      ) : (
-        <div className="flex h-full w-full items-center justify-center bg-[#dddddd] text-[14px] font-bold text-[#646464]">
-          头像占位
-        </div>
-      )}
-
-      <div className="absolute inset-x-0 bottom-0 h-[40px] bg-black/72" />
-      <div className="absolute bottom-[27px] left-1/2 h-[29px] w-[98px] -translate-x-1/2 bg-gradient-to-r from-[#0071ef] to-[#149bff] shadow-[0px_1.942px_1.942px_rgba(0,0,0,0.25)]" />
-      <p className="absolute inset-x-0 bottom-[36px] whitespace-nowrap text-center text-[16px] font-bold leading-none text-white">
-        {name}
-      </p>
-      <p className="absolute bottom-[5px] left-1/2 w-[100px] -translate-x-1/2 text-center text-[12px] font-bold leading-none text-white">
-        {role}
-      </p>
-    </article>
-  );
-}
-
+/**
+ * AutoRail - 自动滚动轨道组件
+ * 基础组件，用于实现横向无限滚动动画，悬停时暂停
+ * 使用速度（pixels/second）控制滚动速度
+ */
 function AutoRail({
   children,
-  duration,
+  speed = 50,
   gapClass,
+  viewportClass = "",
 }: {
   children: React.ReactNode;
-  duration: number;
+  speed?: number; // pixels per second
   gapClass: string;
+  viewportClass?: string;
 }) {
+  const trackRef = useRef<HTMLDivElement>(null);
+  const [duration, setDuration] = useState(20);
+
+  useEffect(() => {
+    if (!trackRef.current) return;
+    const track = trackRef.current;
+    
+    const updateDuration = () => {
+      // 在 flex 下，包含了两个 {children} 所以总长度为实际滚动距离的两倍
+      // 动画是到 -50%，所以滚动的物理长度刚好是原始 children 的宽度
+      const singleContentWidth = track.scrollWidth / 2;
+      if (singleContentWidth > 0) {
+        setDuration(singleContentWidth / speed);
+      }
+    };
+
+    updateDuration();
+    
+    // 这里使用 setTimeout 确保渲染完毕 DOM 排版稳定后再测一次
+    const timer = setTimeout(updateDuration, 100);
+
+    const observer = new ResizeObserver(updateDuration);
+    observer.observe(track);
+    
+    return () => {
+      clearTimeout(timer);
+      observer.disconnect();
+    };
+  }, [speed, children]);
+
   return (
-    <div className="overflow-hidden">
-      <div
-        className={`flex w-max ${gapClass} animate-marquee`}
-        style={{ animationDuration: `${duration}s` }}
-      >
-        {children}
-        {children}
+    <div className={`relative min-w-0 max-w-full overflow-x-hidden ${viewportClass}`}>
+      <div className="py-[6px] w-full">
+        <div
+          ref={trackRef}
+          className={`flex w-max ${gapClass} animate-marquee`}
+          style={{ "--marquee-duration": `${duration}s` } as React.CSSProperties}
+        >
+          {children}
+          {children}
+        </div>
       </div>
     </div>
   );
 }
 
-export function HomeResources() {
-  const [resourceTab, setResourceTab] = useState<ResourceTab>("venue");
-  const [isTabSwitching, setIsTabSwitching] = useState(false);
-
-  const handleResourceTabChange = (nextTab: ResourceTab) => {
-    if (nextTab === resourceTab || isTabSwitching) return;
-    setIsTabSwitching(true);
-
-    window.setTimeout(() => {
-      setResourceTab(nextTab);
-      requestAnimationFrame(() => {
-        requestAnimationFrame(() => setIsTabSwitching(false));
-      });
-    }, 140);
-  };
-
-  const featuredMentorImage = resolveImageSrc(FEATURED_MENTOR.imageUrl);
-  const activeResourceCards = useMemo(
-    () => (resourceTab === "venue" ? VENUE_CARDS : DIGITAL_CARDS),
-    [resourceTab],
-  );
+/**
+ * MentorCardSmall - 小型导师卡片
+ * 用于学术导师和产业导师列表展示
+ */
+function MentorCardSmall({
+  name,
+  description,
+  imageUrl,
+}: {
+  name: string;
+  description: string;
+  imageUrl?: string;
+}) {
+  const resolvedSrc = resolveImageSrc(imageUrl);
 
   return (
+    <article className="relative h-[256px] w-[180px] shrink-0 overflow-hidden rounded-[15px] border border-[#149bff] bg-white shadow-[0px_4px_4px_rgba(0,0,0,0.25)] flex flex-col items-center p-[12px]">
+      {/* 1. 图片区：取消 absolute，改用 w-full */}
+      <div className="h-[180px] w-full overflow-hidden rounded-[10px]">
+        <img
+          src={resolvedSrc}
+          alt={name}
+          className="h-full w-full object-cover object-center"
+          loading="lazy"
+        />
+      </div>
+
+      {/* 2. 名字区：利用 mt (margin-top) 来控制与图片的间距 */}
+      <div className="mt-[8px] w-full text-left">
+        <p className="text-[16px] font-bold leading-none text-black">{name}</p>
+        <div className="mt-[4px] h-[3px] w-full rounded-[1px] bg-gradient-to-r from-[#149bff] to-[#43c5ac]" />
+      </div>
+
+      {/* 3. 描述区：mt-auto 会把它推到容器最底部 */}
+      <p className="mt-1 h-[30px] w-full text-left text-[12px] font-medium leading-tight text-[#464646] line-clamp-2">
+        {description}
+      </p>
+    </article>
+  );
+}
+
+/**
+ * FeaturedMentorCard - 精选导师卡片
+ * 大型展示卡片，用于左侧突出显示主要导师
+ */
+function FeaturedMentorCard({
+  name,
+  description,
+  imageUrl,
+}: {
+  name: string;
+  description: string;
+  imageUrl?: string;
+}) {
+  const resolvedSrc = resolveImageSrc(imageUrl);
+
+  return (
+    <article className="relative flex h-[622px] w-[396px] shrink-0 items-center justify-center overflow-hidden rounded-[45px] border-[5px] border-[#149bff] bg-white">
+      <article className="relative flex h-[522px] w-[326px] flex-col items-center rounded-[35px] bg-white shadow-[0_16px_32px_-8px_rgba(0,0,0,0.18)]">
+        <div className="relative mt-[25px] h-[230px] w-[230px] shrink-0">
+          <div className="absolute inset-[0px] translate-y-[4px] rounded-full bg-[#149bff] blur-[2px]" />
+
+          <div className="absolute inset-0 rounded-full bg-white" />
+
+          <div className="absolute inset-[8px] overflow-hidden rounded-full">
+            {resolvedSrc ? (
+              <img
+                src={resolvedSrc}
+                alt={name || "导师头像"}
+                className="h-full w-full object-cover object-top"
+                loading="lazy"
+              />
+            ) : (
+              <div className="flex h-full w-full items-center justify-center bg-[#ffffff] text-[18px] font-bold text-[#646464]">
+                导师占位
+              </div>
+            )}
+          </div>
+
+          <div className="pointer-events-none absolute inset-[8px] z-20 rounded-full shadow-[inset_0_6px_2px_0px_rgba(67,197,172,0.8)]" />
+        </div>
+
+        <div className="mt-6 flex w-full flex-col items-center pb-[30px]">
+          <div className="flex flex-col items-center">
+            <div className="relative flex items-center justify-center">
+              <p className="whitespace-nowrap text-[32px] font-bold leading-none text-[#383838]">
+                {name}
+              </p>
+              <span className="absolute bottom-[2px] left-full mb-[-2px] ml-2 whitespace-nowrap text-[16px] font-bold text-[#383838]">
+                教授
+              </span>
+            </div>
+
+            <div className="mt-[8px] h-[4px] w-[250px] rounded-[2px] bg-gradient-to-r from-[#0071ef] to-[#149bff]" />
+          </div>
+
+          <p className="mb-[40px] mt-[5px] w-[240px] text-center text-[16px] font-medium leading-relaxed text-[#464646]">
+            {description}
+          </p>
+        </div>
+      </article>
+    </article>
+  );
+}
+
+// =============================================================================
+// 4. 主组件区 (Main Component)
+// =============================================================================
+
+export function HomeResources() {
+  return (
     <section className="w-full bg-white">
-      <div className="mx-auto max-w-[1320px] px-4 pb-[60px] pt-[80px] md:px-8 lg:px-[60px]">
+      <div className="mx-auto max-w-[1320px] px-[20px] pb-[60px] pt-[80px]">
+        {/* Title Section */}
         <div className="flex items-start gap-3">
           <img
             src="/assets/logo.svg"
@@ -151,153 +214,68 @@ export function HomeResources() {
           </div>
         </div>
 
-        <div className="mt-[40px]">
-          <div className="flex flex-col lg:flex-row gap-[50px] items-start">
-            <div className="bg-white p-8 rounded-[25px]">
-              <div className="relative h-[600px] w-[400px] shrink-0 rounded-[25px] bg-gradient-to-b from-white to-[#9fdcff] p-[2px] shadow-[0px_4px_4px_rgba(0,0,0,0.25)] origin-center scale-[0.9]">
-                <div className="absolute left-1/2 top-[24px] h-[400px] w-[350px] -translate-x-1/2 overflow-hidden rounded-tl-[20px] rounded-tr-[20px]">
-                {featuredMentorImage ? (
-                  <img
-                    src={featuredMentorImage}
-                    alt={FEATURED_MENTOR.name}
-                    className="h-full w-full object-cover object-top"
-                    loading="lazy"
-                  />
-                ) : (
-                  <div className="flex h-full w-full items-center justify-center bg-[#dddddd] text-[18px] font-bold text-[#646464]">
-                    导师大图占位
-                  </div>
-                )}
-              </div>
-
-              <div className="absolute bottom-0 left-1/2 h-[154px] w-[436px] -translate-x-1/2 rounded-[15px] bg-gradient-to-t from-black via-black/80 to-black/35" />
-              <div className="absolute left-1/2 top-[424px] h-[62px] w-[226px] -translate-x-1/2 bg-gradient-to-r from-[#0071ef] to-[#149bff] shadow-[0px_4px_4px_rgba(0,0,0,0.25)]" />
-              <p className="absolute left-1/2 top-[437px] -translate-x-1/2 whitespace-nowrap text-[34px] font-bold leading-none text-white">
-                {FEATURED_MENTOR.name}
-              </p>
-              <p className="absolute left-1/2 top-[512px] w-[295px] -translate-x-1/2 text-center text-[20px] font-bold leading-none text-white">
-                {FEATURED_MENTOR.roleLines}
-              </p>
-            </div>
+        {/* Main Gradient Container */}
+        <div
+          className="mt-[40px] flex h-[687px] w-[1260px] flex-row gap-[32px] rounded-[45px] py-[32px] pl-[16px] pr-[32px] shadow-[0px_4px_4px_rgba(0,0,0,0.25)]"
+          style={{
+            backgroundImage: `
+              linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, rgba(67, 197, 172, 0.13) 100%),
+              linear-gradient(147.5deg, rgba(20, 155, 255, 0) 84.772%, rgba(20, 155, 255, 0.65) 120.55%),
+              linear-gradient(224.9deg, rgba(67, 197, 172, 0.13) 8.9927%, rgba(255, 255, 255, 0) 43.565%),
+              linear-gradient(141.6deg, rgba(0, 113, 239, 0.65) 3.8182%, rgba(255, 255, 255, 0) 67.027%)
+            `,
+          }}
+        >
+          {/* Left Column - Featured Mentor */}
+          <div className="flex shrink-0 items-center">
+            <FeaturedMentorCard
+              name={FEATURED_MENTOR.name}
+              description={FEATURED_MENTOR.description}
+              imageUrl={FEATURED_MENTOR.imageUrl}
+            />
           </div>
 
-            <div className="flex-1 w-full min-w-0">
-              <div>
-                <p className="text-[24px] font-bold leading-none text-[#383838]">
+          {/* Right Column - Mentor Grids */}
+          <div className="flex min-w-0 flex-1 flex-col justify-center gap-[32px]">
+            {/* Academic Mentors Section */}
+            <div className="w-full min-w-0">
+              <div className="mb-[16px] flex flex-col items-start">
+                <p className="text-[24px] font-bold leading-none text-black">
                   学术导师
                 </p>
-                <div className="mt-[9px] h-[5px] w-[96px] rounded-[1px] bg-[#0071ef]" />
-                <div className="mt-[18px] w-full overflow-hidden">
-                  <AutoRail duration={40} gapClass="gap-[24px]">
-                    {ACADEMIC_MENTORS.map((item) => (
-                      <MentorCard
-                        key={item.id}
-                        name={item.name}
-                        role={item.role}
-                        imageUrl={item.imageUrl}
-                      />
-                    ))}
-                  </AutoRail>
-                </div>
+                <div className="mt-2 -mb-2 h-[5px] w-25 rounded-[5px] bg-[#0071ef]" />
               </div>
+              <AutoRail speed={50} gapClass="gap-[16px]" viewportClass="pr-[2px]">
+                {ACADEMIC_MENTORS.map((mentor) => (
+                  <MentorCardSmall
+                    key={mentor.id}
+                    name={mentor.name}
+                    description={mentor.description}
+                    imageUrl={mentor.imageUrl}
+                  />
+                ))}
+              </AutoRail>
+            </div>
 
-              <div className="mt-[100px]">
-                <p className="text-[24px] font-bold leading-none text-[#383838]">
+            {/* Industry Mentors Section */}
+            <div className="w-full min-w-0">
+              <div className="mb-[16px] flex flex-col items-start">
+                <p className="text-[24px] font-bold leading-none text-black">
                   产业导师
                 </p>
-                <div className="mt-[9px] h-[5px] w-[96px] rounded-[1px] bg-[#0071ef]" />
-                <div className="mt-[18px] w-full overflow-hidden">
-                  <AutoRail duration={45} gapClass="gap-[24px]">
-                    {INDUSTRY_MENTORS.map((item) => (
-                      <MentorCard
-                        key={item.id}
-                        name={item.name}
-                        role={item.role}
-                        imageUrl={item.imageUrl}
-                      />
-                    ))}
-                  </AutoRail>
-                </div>
+                <div className="mt-[8px] -mb-2 h-[5px] w-25 rounded-[5px] bg-[#0071ef]" />
               </div>
+              <AutoRail speed={50} gapClass="gap-[16px]" viewportClass="pr-[2px]">
+                {INDUSTRY_MENTORS.map((mentor) => (
+                  <MentorCardSmall
+                    key={mentor.id}
+                    name={mentor.name}
+                    description={mentor.description}
+                    imageUrl={mentor.imageUrl}
+                  />
+                ))}
+              </AutoRail>
             </div>
-          </div>
-        </div>
-
-        <div className="mt-[44px] flex items-end justify-between">
-          <div className="flex items-end gap-[30px]">
-            <button
-              type="button"
-              onClick={() => handleResourceTabChange("venue")}
-              className={`text-[24px] font-bold leading-none ${resourceTab === "venue" ? "text-[#333333]" : "text-[#7a7a7a]"}`}
-            >
-              场地设备
-            </button>
-            <button
-              type="button"
-              onClick={() => handleResourceTabChange("digital")}
-              className={`text-[24px] font-bold leading-none ${resourceTab === "digital" ? "text-[#383838]" : "text-[#7a7a7a]"}`}
-            >
-              数字资源
-            </button>
-          </div>
-
-          <Link
-            href="/ecosystem/engineering"
-            className="inline-flex items-center gap-2 text-[16px] font-bold leading-none text-[#cecece]"
-          >
-            查看全部
-            <span className="text-[26px] font-normal leading-none text-[#0071ef]">
-              ›
-            </span>
-          </Link>
-        </div>
-        <div
-          className="mt-[12px] h-[5px] w-[96px] rounded-[1px] bg-[#0071ef]"
-          style={{ marginLeft: resourceTab === "venue" ? 0 : 126 }}
-        />
-
-        <div className="mt-[18px] overflow-hidden">
-          <div className={`w-full transition-opacity duration-300 ${isTabSwitching ? "opacity-0" : "opacity-100"}`}>
-            <AutoRail duration={30} gapClass="gap-[33px] pb-[8px]">
-              {activeResourceCards.map((item) => {
-                const venueImage = resolveImageSrc(item.imageUrl);
-
-                return (
-                  <article
-                    key={item.id}
-                    className="relative h-[270px] w-[410px] shrink-0 overflow-hidden rounded-[25px] border border-[#f3f3f3] shadow-[0px_0px_16px_rgba(79,79,79,0.11)]"
-                  >
-                    {venueImage ? (
-                      <img
-                        src={venueImage}
-                        alt={item.title}
-                        className="h-full w-full object-cover object-center"
-                        loading="lazy"
-                      />
-                    ) : (
-                      <div className="flex h-full w-full items-center justify-center bg-[#d7d7d7] text-[20px] font-bold text-[#646464]">
-                        场地图片占位
-                      </div>
-                    )}
-
-                    <div className="absolute inset-x-0 -bottom-[2px] h-[72px] rounded-b-[25px] bg-white" />
-                    <p className="absolute left-[20px] top-[212px] text-[16px] font-bold leading-none text-black">
-                      {item.title}
-                    </p>
-                    <p className="absolute left-[20px] top-[237px] text-[12px] font-bold leading-none tracking-[0.3em] text-[#888888]">
-                      {item.summary}
-                    </p>
-
-                    <Link
-                      href={item.href}
-                      className="absolute right-[18px] top-[220px] inline-flex h-[30px] w-[100px] items-center justify-center rounded-[5px] bg-gradient-to-r from-[#0071ef] to-[#149bff] text-[14px] font-bold leading-none tracking-[0.3em] text-white"
-                    >
-                      <span className="pl-[0.3em]">查看详情</span>
-                    </Link>
-                  </article>
-                );
-              })}
-            </AutoRail>
           </div>
         </div>
       </div>

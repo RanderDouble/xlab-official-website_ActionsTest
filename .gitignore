@@ -1,5 +1,8 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
+# video resources
+/public/videos
+
 # dependencies
 /node_modules
 /.pnp
@@ -47,6 +50,9 @@ next-env.d.ts
 !.vscode/extensions.json
 .idea
 .claudeignore
+CLAUDE.md
+.claude/
+.mcp.json
 
 # build output (non-next)
 dist

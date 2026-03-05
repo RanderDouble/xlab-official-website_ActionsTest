@@ -1,4 +1,4 @@
-import { RESEARCH_PROJECTS, RESEARCH_ACHIEVEMENTS_BRIEF, HARDWARE_TEAM_ACHIEVEMENTS, SOFTWARE_TEAM_ACHIEVEMENTS, OPERATION_TEAM_ACHIEVEMENTS } from "@/lib/data";
+import { RESEARCH_ACHIEVEMENTS_BRIEF, HARDWARE_TEAM_ACHIEVEMENTS, SOFTWARE_TEAM_ACHIEVEMENTS, OPERATION_TEAM_ACHIEVEMENTS } from "@/lib/data";
 import { LogoWithTitle } from "@/components/shared/LogoWithTitle";
 import { ResearchTeamCard } from "./ResearchTeamCard"
 import Image from "next/image";
@@ -58,7 +58,10 @@ export function Achievements() {
                     marginTop: "-4px" 
                   }}
                 >
-                  {RESEARCH_ACHIEVEMENTS_BRIEF}
+                  {`浙江大学启真交叉学科创新创业实验室的科研成果丰硕。这里交代科研成果。
+ 非常多的科研成果。
+ 非常丰硕的科研成果。
+ 四个团队合力完成了很多科研成果。`}
                 </p>
               </div>
 

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState, useCallback } from "react";
+import Link from "next/link";
 import { ACTIVITIES } from "@/lib/data";
 import { NewsSectionHeader } from "@/components/sections/news/NewsSectionHeader";
 
@@ -132,11 +133,11 @@ export function ActivityList() {
     <section className="w-full bg-white">
       <div className="max-w-[1320px] mx-auto py-10 space-y-4">
         {/* 标题保留内边距对齐 */}
-        <div className="px-4 md:px-8 lg:px-[60px]">
+        <div className="px-[60px]">
           <NewsSectionHeader
             title="活动招募"
             subtitle="Event Recruitment"
-            href="/news/list?category=activity"
+            href="/news/list"
           />
         </div>
 
@@ -144,7 +145,7 @@ export function ActivityList() {
            1. flex items-center gap-0: 减小按钮与卡片的距离到 0
            2. 移除了 px，让按钮尽可能向两边靠
         */}
-        <div className="flex items-center gap-0 w-full px-2 md:px-4">
+        <div className="flex items-center gap-0 w-full px-4">
           {/* 左按钮：加大尺寸 (h-24 w-24) */}
           <button
             type="button"
@@ -179,45 +180,46 @@ export function ActivityList() {
               }}
             >
               {extendedItems.map((item, index) => (
-                <div
+                <Link
                   key={`${item.id}-${index}`}
+                  href={item.link}
+                  className="block shrink-0"
                   style={{
-                    // 强制宽度，确保 flex 布局不会挤压或拉伸
                     width: `${cardWidth}px`,
                     flex: `0 0 ${cardWidth}px`,
                   }}
-                  className="h-[340px] bg-white rounded-[10px] shadow-[0px_0px_16px_rgba(79,79,79,0.11)] overflow-hidden relative flex-shrink-0"
                 >
-                  <div className="absolute inset-x-0 top-0 h-[220px] overflow-hidden bg-[#f3f3f3]">
-                    <img
-                      src={resolveImageSrc(item.imageUrl)}
-                      alt={item.title}
-                      className="h-full w-full object-cover object-top"
-                      loading="lazy"
-                    />
-                  </div>
-                  <div className="absolute inset-x-0 bottom-0 h-[120px] bg-white px-4 pt-3">
-                    <div className="text-base font-semibold text-[#383838] leading-[1.5]">
-                      {item.title}
+                  <div className="h-[340px] bg-white rounded-[10px] shadow-[0px_0px_16px_rgba(79,79,79,0.11)] overflow-hidden relative flex-shrink-0 hover:shadow-[0px_0px_20px_rgba(79,79,79,0.16)] transition-shadow cursor-pointer">
+                    <div className="absolute inset-x-0 top-0 h-[220px] overflow-hidden bg-[#f3f3f3]">
+                      <img
+                        src={resolveImageSrc(item.imageUrl)}
+                        alt={item.title}
+                        className="h-full w-full object-cover object-top"
+                        loading="lazy"
+                      />
                     </div>
-                    <div className="mt-2 flex items-start justify-between">
-                      <div className="text-xs font-semibold text-[#646464]">
-                        {item.date}
+                    <div className="absolute inset-x-0 bottom-0 h-[120px] bg-white px-4 pt-3 flex flex-col">
+                      <div className="text-base font-semibold text-[#383838] leading-[1.5] line-clamp-2">
+                        {item.title}
                       </div>
-                      <a
-                        href={item.link}
-                        className={
-                          item.status === "active"
-                            ? "inline-flex items-center justify-center h-[32px] w-[110px] rounded-full text-white text-[15px] font-bold bg-gradient-to-r from-[#0071ef] to-[#149bff] shadow-sm whitespace-nowrap mt-6"
-                            : "inline-flex items-center justify-center h-[32px] w-[110px] rounded-full text-white text-[15px] font-bold bg-[#cecece] whitespace-nowrap mt-6"
-                        }
-                        style={{ fontFamily: '"PingFang SC", "Hiragino Sans GB", "Source Han Sans SC", "Microsoft YaHei UI", sans-serif' }}
-                      >
-                        {item.ctaLabel}
-                      </a>
+                      <div className="mt-auto flex items-center justify-between pb-3">
+                        <div className="text-xs font-semibold text-[#646464]">
+                          {item.date}
+                        </div>
+                        <span
+                          className={
+                            item.status === "active"
+                              ? "inline-flex items-center justify-center h-[32px] w-[110px] rounded-full text-white text-[15px] font-bold bg-gradient-to-r from-[#0071ef] to-[#149bff] shadow-sm whitespace-nowrap"
+                              : "inline-flex items-center justify-center h-[32px] w-[110px] rounded-full text-white text-[15px] font-bold bg-[#cecece] whitespace-nowrap"
+                          }
+                          style={{ fontFamily: '"PingFang SC", "Hiragino Sans GB", "Source Han Sans SC", "Microsoft YaHei UI", sans-serif' }}
+                        >
+                          {item.ctaLabel}
+                        </span>
+                      </div>
                     </div>
                   </div>
-                </div>
+                </Link>
               ))}
             </div>
           </div>

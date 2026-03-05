@@ -1,12 +1,40 @@
 "use client";
 
 import { useEffect, useRef, useState, type CSSProperties } from "react";
+import Link from "next/link";
+import Image from "next/image";
 import { MEDIA_QUOTES } from "@/lib/data";
 import { NewsSectionHeader } from "@/components/sections/news/NewsSectionHeader";
 
 const CARD_GAP = 24;
 const SCROLL_SPEED = 45;
 const CARD_HEIGHT = 260;
+
+// ==================== Utility Functions ====================
+
+function formatDate(dateStr: string): string {
+  return dateStr.replace(/-/g, "/");
+}
+
+// ==================== Sub-components ====================
+
+function QuoteIcon({ className }: { className?: string }) {
+  return (
+    <svg
+      className={className}
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M4.583 17.321C3.553 16.227 3 15 3 13.011c0-3.5 2.457-6.637 6.03-8.188l.893 1.378c-3.335 1.384-5.798 4.076-5.798 6.81 0 0 .133-.065.335-.065.891 0 1.779.327 2.468.909.692.584 1.062 1.4 1.062 2.301 0 1.8-1.481 3.263-3.303 3.263-1.182 0-2.29-.628-2.897-1.639-.19-.315-.295-.67-.295-1.038 0-.402.127-.783.35-1.11zm10 0C13.553 16.227 13 15 13 13.011c0-3.5 2.457-6.637 6.03-8.188l.893 1.378c-3.335 1.384-5.798 4.076-5.798 6.81 0 0 .133-.065.335-.065.891 0 1.779.327 2.468.909.692.584 1.062 1.4 1.062 2.301 0 1.8-1.481 3.263-3.303 3.263-1.182 0-2.29-.628-2.897-1.639-.19-.315-.295-.67-.295-1.038 0-.402.127-.783.35-1.11z"
+        fill="#D9D9D9"
+      />
+    </svg>
+  );
+}
 
 export function MediaCoverage() {
   const viewportRef = useRef<HTMLDivElement>(null);
@@ -42,41 +70,66 @@ export function MediaCoverage() {
   const duration = scrollDistance > 0 ? scrollDistance / SCROLL_SPEED : 30;
 
   const renderCard = (item: (typeof MEDIA_QUOTES)[number], key: string) => (
-    <div
+    <Link
       key={key}
-      className="shrink-0"
+      href={item.link}
+      className="shrink-0 block cursor-pointer"
       style={{ width: `${cardWidth}px`, flex: `0 0 ${cardWidth}px` }}
     >
-      <div className="bg-white rounded-[10px] shadow-[0px_0px_16px_rgba(79,79,79,0.11)] px-7 py-5 flex flex-col" style={{ height: `${CARD_HEIGHT}px` }}>
-        <div className="flex-1 space-y-4">
-          <div className="h-6 w-6 rounded-[2px] bg-[#e5e5e5]" aria-hidden="true" />
-          <p className="text-[15px] text-[#383838] leading-[1.6]">{item.content}</p>
+      <div
+        className="bg-white rounded-[10px] shadow-[0px_0px_16px_rgba(79,79,79,0.11)] px-7 py-5 flex flex-col hover:shadow-[0px_0px_20px_rgba(79,79,79,0.15)] transition-shadow"
+        style={{ height: `${CARD_HEIGHT}px` }}
+      >
+        {/* Top: Quote icon + content + date */}
+        <div className="flex-1 flex flex-col">
+          <QuoteIcon className="mb-3" />
+          <p className="text-[15px] text-[#383838] leading-[1.6] flex-1">
+            {item.content}
+          </p>
+          <div className="text-[12px] text-[#383838] text-right mt-2">
+            {formatDate(item.date)}
+          </div>
         </div>
 
-        <div className="space-y-4">
-          <div className="h-px w-full bg-[#d9d9d9]" aria-hidden="true" />
-          <div className="flex items-center justify-between">
-            <div>
-              <div className="text-base font-semibold text-[#383838]">{item.mediaName}</div>
-              <div className="text-[10px] text-[#383838]">{item.date}</div>
-            </div>
-            <div className="flex items-center gap-2">
-              <div className="h-6 w-6 rounded-[2px] bg-[#e5e5e5]" aria-hidden="true" />
-              <div className="h-3 w-[60px] rounded-[2px] bg-[#e5e5e5]" aria-hidden="true" />
-            </div>
+        {/* Separator line */}
+        <div className="h-px w-full bg-[#D9D9D9] my-4" aria-hidden="true" />
+
+        {/* Bottom: Book icon + media name | Logo + X-Lab */}
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <Image
+              src="/assets/news/Book.svg"
+              alt=""
+              width={21}
+              height={27}
+              className="shrink-0"
+            />
+            <span className="text-base font-semibold text-[#383838]">
+              {item.mediaName}
+            </span>
+          </div>
+          <div className="flex items-center gap-1.5 -mb-4 -mr-1">
+            <Image
+              src="/assets/header/Logo.svg"
+              alt=""
+              width={20}
+              height={20}
+              className="shrink-0"
+            />
+            <span className="text-base font-semibold text-[#383838]">X-Lab</span>
           </div>
         </div>
       </div>
-    </div>
+    </Link>
   );
 
   return (
     <section className="w-full bg-white">
-      <div className="max-w-[1320px] mx-auto px-4 md:px-8 lg:px-[60px] py-10 space-y-5">
-        <NewsSectionHeader title="媒体关注" subtitle="Media Attention" href="/news/list?category=media" />
+      <div className="max-w-[1320px] mx-auto px-[60px] py-10 space-y-5">
+        <NewsSectionHeader title="媒体关注" subtitle="Media Attention" href="/news/media" />
       </div>
 
-      <div className="relative left-1/2 right-1/2 w-screen -translate-x-1/2 px-2 md:px-3 lg:px-4 pb-10">
+      <div className="relative left-1/2 right-1/2 w-screen -translate-x-1/2 px-4 pb-10">
         <div className="media-marquee-viewport overflow-x-hidden overflow-y-visible py-6" ref={viewportRef}>
           <div
             className="media-marquee-track flex w-max gap-6"
