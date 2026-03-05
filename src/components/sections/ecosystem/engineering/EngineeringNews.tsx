@@ -18,7 +18,7 @@ export function EngineeringNews() {
   };
 
   return (
-    <section className="w-full relative overflow-hidden py-16 bg-white">
+    <section className="w-full relative overflow-hidden pt-24 pb-16 bg-white">
       {/* 左下角背景LOGO */}
       <div className="absolute left-[-40px] bottom-[-40px] w-[350px] h-[350px] pointer-events-none z-0">
         <Image 
@@ -32,13 +32,6 @@ export function EngineeringNews() {
       <div className="max-w-7xl mx-auto px-4 md:px-8 relative z-10">
         <div className="flex justify-between items-start mb-12">
           <LogoWithTitle chineseText="新闻动态" englishText="News Updates" />
-          <Link
-            href="/ecosystem/engineering/news"
-            className="flex items-center gap-2 text-gray-400 hover:text-blue-500 transition-colors mt-1"
-          >
-            <span className="text-sm font-medium">查看全部</span>
-            <Image src="/engineering/right_arrow.svg" width={40} height={40} alt="arrow" />
-          </Link>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-start">
@@ -62,7 +55,7 @@ export function EngineeringNews() {
               <Image src="/engineering/right_arrow.svg" width={30} height={50} alt="next" />
             </button>
 
-            {/* ====================== 图文卡片点击跳转 ====================== */}
+            {/* 图文卡片点击跳转 */}
             <Link 
               href={ENGINEERING_IMAGE_NEWS[currentIdx].link} 
               className="relative w-full aspect-[4/3] rounded-xl overflow-hidden shadow-2xl bg-white block"
@@ -94,13 +87,16 @@ export function EngineeringNews() {
           </div>
 
           {/* 右侧文字列表 */}
-          <div className="lg:col-span-7 space-y-0 divide-y divide-gray-200">
-            {ENGINEERING_TEXT_NEWS.slice(0, 4).map((news) => (
+          <div className="lg:col-span-7 space-y-0">
+            {ENGINEERING_TEXT_NEWS.slice(0, 4).map((news, index) => (
               <Link
                 key={news.id}
                 href={news.link}
-                className="group block py-6 first:pt-0"
+                className={`group block py-6 border-t border-gray-200 relative ${index === 0 ? 'pt-6' : ''}`}
               >
+                {/* 蓝色加载条 */}
+                <span className="absolute top-0 left-0 h-[2px] w-0 bg-blue-500 group-hover:w-full transition-all duration-700 ease-in-out" />
+                
                 <div className="flex justify-between items-start gap-8">
                   <div className="flex-1 space-y-3">
                     <h4 className="text-lg font-bold text-gray-800 group-hover:text-blue-600 transition-colors leading-snug">

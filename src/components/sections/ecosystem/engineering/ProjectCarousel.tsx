@@ -1,26 +1,37 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-// 移除 Autoplay 导入
+import Autoplay from "embla-carousel-autoplay";
 import useEmblaCarousel from "embla-carousel-react";
 import Image from "next/image";
 import { SHORT_TERM_PROJECTS } from "@/lib/data";
 import { LogoWithTitle } from "@/components/shared/LogoWithTitle";
 
 export function ProjectCarousel() {
-  // 1. 取消自动播放：移除 Autoplay 插件配置
   const [emblaRef, emblaApi] = useEmblaCarousel(
-    { loop: true, align: "center" } 
+    { loop: true, align: "center" },
+    [Autoplay({ delay: 5500 })]
   );
 
   const [selectedIndex, setSelectedIndex] = useState(0);
 
-  const scrollPrev = useCallback(() => emblaApi?.scrollPrev(), [emblaApi]);
-  const scrollNext = useCallback(() => emblaApi?.scrollNext(), [emblaApi]);
+  const scrollPrev = useCallback(() => {
+    emblaApi?.scrollPrev();
+    // 用户交互：暂停自动播放
+    emblaApi?.plugins()?.autoplay?.stop();
+  }, [emblaApi]);
+
+  const scrollNext = useCallback(() => {
+    emblaApi?.scrollNext();
+    // 用户交互：暂停自动播放
+    emblaApi?.plugins()?.autoplay?.stop();
+  }, [emblaApi]);
 
   const onSelect = useCallback(() => {
     if (!emblaApi) return;
     setSelectedIndex(emblaApi.selectedScrollSnap());
+    // 每次选择完成后（包括手动和自动），重新启动自动播放
+    emblaApi.plugins()?.autoplay?.play();
   }, [emblaApi]);
 
   useEffect(() => {
@@ -39,9 +50,22 @@ export function ProjectCarousel() {
   }, [emblaApi, onSelect]);
 
   const scrollTo = useCallback(
-    (index: number) => emblaApi?.scrollTo(index),
+    (index: number) => {
+      emblaApi?.scrollTo(index);
+      // 用户点击分页器：暂停自动播放
+      emblaApi?.plugins()?.autoplay?.stop();
+    },
     [emblaApi]
   );
+
+  // useEffect(() => {
+  //   if (!emblaApi || !autoplay) return;
+  //   
+  //   const autoplayPlugin = emblaApi.plugins()?.autoplay;
+  //   if (autoplayPlugin && !autoplayPlugin.isPlaying()) {
+  //     autoplayPlugin.play();
+  //   }
+  // }, [emblaApi, selectedIndex, autoplay]);
 
   return (
     <section className="w-full bg-white relative">
@@ -71,7 +95,7 @@ export function ProjectCarousel() {
                 {SHORT_TERM_PROJECTS.map((item) => (
                   <div 
                     key={item.id} 
-                    className="flex-[0_0_100%] min-w-0 h-full px-4 md:px-8 py-12 md:py-20" // Slide 仍然占满这个收缩后的容器
+                    className="flex-[0_0_100%] min-w-0 h-full px-4 md:px-8 py-12 md:py-20"
                   >
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center h-full w-full">
                       {/* 文字区 */}

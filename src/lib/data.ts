@@ -304,6 +304,61 @@ export const SPECIAL_COLUMNS = [
   },
 ];
 
+export const THREE_SOUNDS = [
+  {
+    id: 4,
+    title: "6元买断制 App 如何单挑亿万级算法？ NoFeed 开发者的“文艺复兴式”破局之道",
+    imageUrl: "/engineering/three_sounds/nofeed.jpg",
+    link: "https://mp.weixin.qq.com/s/_75ZOLSdgDrwtJmxGHaFng",
+    date: "2025-09-16"
+  },
+  {
+    id: 3,
+    title: "智启纳威创始人胡旭升：在信息迷雾中逐光而行",
+    imageUrl: "/engineering/three_sounds/nawei.jpg",
+    link: "https://mp.weixin.qq.com/s/MvzEJlGhBa5y31HQD7t1Uw",
+    date: "2025-08-16"
+  },
+  {
+    id: 2,
+    title: "INTHEPOND创始人dekko：不做中医翻译器，要做身体对话仪",
+    imageUrl: "/engineering/three_sounds/inthepond.jpg",
+    link: "https://mp.weixin.qq.com/s/L1s1XZHhhY7CMeOsgI_ATg",
+    date: "2025-08-03"
+  },
+  {
+    id: 1,
+    title: "X-Lab×领挚科技CEO冯林润：不确定的冰原上，一场“非创不可”的旅程",
+    imageUrl: "/engineering/three_sounds/lingzhi.jpg",
+    link: "https://mp.weixin.qq.com/s/ZEe4GgCde_VL2nzQT_QSvw",
+    date: "2025-07-07"
+  },
+];
+
+export const NOAH_ARK = [
+  {
+    id: 3,
+    title: "Outlier",
+    imageUrl: "/engineering/noah_ark/p3.png",
+    link: "https://mp.weixin.qq.com/s/H5_yvOeehNOhEMMYZvWFTw",
+    date: "2025-12-22"
+  },
+  {
+    id: 2,
+    title: "通往电赛领奖台的两条航道（文末附开源链接）",
+    imageUrl: "/engineering/noah_ark/p2.jpg",
+    link: "https://mp.weixin.qq.com/s/pWen4dArjivRbFAG37g-Zg",
+    date: "2025-10-27"
+  },
+  {
+    id: 1,
+    title: "被批「趁早收手」的一群本科生和他们的「刑具」革命",
+    imageUrl: "/engineering/noah_ark/p1.jpg",
+    link: "https://mp.weixin.qq.com/s/qZM0OWghhE9O66l4NjrJTA",
+    date: "2025-08-09"
+  },
+];
+
 export const ENGINEERING_TEXT_NEWS = [
   { 
     id: 101, 
@@ -534,6 +589,69 @@ export const LAB_MERCH = [
   },
 ];
 
+export const LAB_MERCH_LIST_DATA = [
+  { 
+    id: 1, 
+    name: "X-Lab合影透卡", 
+    desc: "把瞬间封存在一张会透光的记忆里", 
+    img: "/life/merch_list/transparent_card.png" 
+  },
+  { 
+    id: 2, 
+    name: "X-Lab运营实习期内训任务通关卡片", 
+    desc: "标识实习成员阶段性任务通关结果", 
+    img: "/life/merch_list/pass_card.png" 
+  },
+  {
+    id: 3, 
+    name: "X-Lab × 真格基金 × Bonjour 文创", 
+    desc: "承载活动身份标识与信息交互的文创", 
+    img: "/life/merch_list/bonjour_card.jpg" 
+  },
+  { 
+    id: 4, 
+    name: "X-Lab胸针", 
+    desc: "呈现X-Laber的共创身份与参与记录", 
+    img: "/life/merch_list/pin.png" 
+  },
+  { 
+    id: 5, 
+    name: "X-Lab导师聘书", 
+    desc: "面向X-Lab导师发放的官方聘任与身份确认文书", 
+    img: "/life/merch_list/supervisor_appointment.png" 
+  },
+  { 
+    id: 6, 
+    name: "2025 X-Lab年会礼盒", 
+    desc: "用于年会场景的周年纪念", 
+    img: "/life/merch_list/gift_box.png" 
+  },
+  { 
+    id: 7, 
+    name: "X-Lab运营实习期结业册", 
+    desc: "记录一段运营实习旅程与成长成果的阶段性汇编", 
+    img: "/life/merch_list/completion_album.png" 
+  },
+  { 
+    id: 8, 
+    name: "2026 X-Lab新年pcb板", 
+    desc: "融合工程语言与视觉设计的2026跨年定制电路板", 
+    img: "/life/merch_list/pcb2026.png" 
+  },
+  { 
+    id: 9, 
+    name: "2025 X-Lab新年pcb板", 
+    desc: "以定制电路板形式制作的X-Lab2025跨年纪念物", 
+    img: "/life/merch_list/pcb2025.png" 
+  },
+  { 
+    id: 10, 
+    name: "共创现场 · 合影记录", 
+    desc: "支持与指导的见证", 
+    img: "/life/merch_list/somebody.png" 
+  },
+]
+
 export const TESTIMONIALS = [
   {
     id: 1,
@@ -613,7 +731,7 @@ export const HOME_LAB_NEWS: HomeLabNewsItem[] = [
   },
   {
     id: "ln2",
-    title: "新闻标题标题标题标题标题标题标题题标题标题...",
+    title: "新闻标题标题标题标题标题标题标题題标题标题...",
     date: "2026年01月02",
     summary: "XX教授发表文章于XX报这是一条新闻放在这里占位占位占位",
     imageUrl: "/assets/tmp/占位图1.png",

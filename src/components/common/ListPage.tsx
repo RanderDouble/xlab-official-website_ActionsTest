@@ -1,53 +1,68 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import type { ReactNode } from "react";
 import type { ListPageItem } from "@/types";
 
-// 默认卡片渲染函数
+// 1. 调整后的卡片渲染函数
 function DefaultListItemCard({ item }: { item: ListPageItem }) {
   return (
-    <article className="group flex gap-7">
-      <div className="h-[160px] w-[200px] shrink-0 overflow-hidden rounded-[8px] bg-[#dff1ff] shadow-inner">
-        {item.imageUrl ? (
-          <img
-            src={item.imageUrl}
-            alt={item.title}
-            className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-          />
-        ) : (
-          <div className="h-full w-full bg-gradient-to-br from-[#e0f2ff] to-[#f0f9ff]" />
-        )}
-      </div>
-
-      <div className="flex min-w-0 flex-1 flex-col py-1">
-        <h2 className="line-clamp-2 text-[20px] font-bold leading-[1.4] text-[#333] transition-colors group-hover:text-[#0071ef]">
-          {item.title}
-        </h2>
-
-        <div className="mt-3 flex flex-wrap items-center gap-x-3 gap-y-2">
-          <span className="text-[12px] font-medium text-[#999]">{item.date}</span>
-          {item.category && (
-            <span className="inline-flex h-[22px] min-w-[52px] items-center justify-center rounded-[7px] bg-gradient-to-r from-[#0071ef] to-[#149bff] px-1 text-[13px] font-black text-white tracking-[0.2em]">
-              <span className="pl-[0.35em]">{item.category}</span>
-            </span>
+    <Link href={item.link} className="block group"> 
+      {/* 点击卡片全区域即可跳转 */}
+      <article className="flex gap-7">
+        <div className="relative h-[200px] w-[200px] shrink-0 overflow-hidden rounded-[8px] bg-[#dff1ff] shadow-inner">
+          {item.imageUrl ? (
+            <Image
+              src={item.imageUrl}
+              alt={item.title}
+              fill
+              className="object-cover transition-transform duration-500 group-hover:scale-105"
+            />
+          ) : (
+            <div className="h-full w-full bg-gradient-to-br from-[#e0f2ff] to-[#f0f9ff]" />
           )}
         </div>
 
-        {item.summary && (
-          <p className="mt-2 line-clamp-2 text-[13px] text-[#666]">{item.summary}</p>
-        )}
+        <div className="flex min-w-0 flex-1 flex-col py-1">
+          {/* 标题 */}
+          <h2 className="mt-5 line-clamp-2 text-[21px] font-bold leading-[1.4] text-[#333] transition-colors group-hover:text-[#0071ef]">
+            {item.title}
+          </h2>
 
-        <div className="mt-auto pt-2">
-          <Link
-            href={item.link}
-            className="inline-flex items-center text-[13px] font-medium text-[#666] transition-colors hover:text-[#0071ef]"
-          >
-            阅读详情 <span className="ml-1 text-[10px] transition-transform group-hover:translate-x-0.5">→</span>
-          </Link>
+          <div className="mt-3 flex flex-wrap items-center gap-x-3 gap-y-2">
+            {/* 日期显示 */}
+            <span 
+              className="font-bold text-[#646464] tracking-[0.08em]"
+              style={{ 
+                fontSize: "17px",
+                lineHeight: "29px"
+              }}
+            >
+              {item.date}
+            </span>
+
+            {item.category && (
+              <span className="inline-flex h-[22px] min-w-[52px] items-center justify-center rounded-[7px] bg-gradient-to-r from-[#0071ef] to-[#149bff] px-1 text-[13px] font-black text-white tracking-[0.2em]">
+                <span className="pl-[0.35em]">{item.category}</span>
+              </span>
+            )}
+          </div>
+
+          {item.summary && (
+            <p className="mt-2 line-clamp-2 text-[13px] text-[#666]">{item.summary}</p>
+          )}
+
+          {/* 文本改成“查看全文” */}
+          <div className="mt-auto mb-4"> 
+            <span className="text-[13px] font-medium text-[#666] transition-colors group-hover:text-[#0071ef]">
+              查看全文
+            </span>
+          </div>
         </div>
-      </div>
-    </article>
+      </article>
+    </Link>
   );
 }
 
@@ -55,8 +70,10 @@ interface ListPageProps {
   title: string;
   items: ListPageItem[];
   emptyText?: string;
-  // 自定义卡片渲染函数（可选）
   renderItem?: (item: ListPageItem) => ReactNode;
+  currentPage?: number;
+  totalPages?: number;
+  onPageChange?: (page: number) => void;
 }
 
 export function ListPage({
@@ -64,26 +81,33 @@ export function ListPage({
   items,
   emptyText = "暂无内容",
   renderItem,
+  currentPage = 1,
+  totalPages = 1,
+  onPageChange,
 }: ListPageProps) {
   return (
-    <section className="relative min-h-screen w-full bg-[#f3f3f3] pb-20">
-      {/* SVG背景图 - 宽度100%，高度不够时自动平铺 */}
+    <section className="relative min-h-screen w-full bg-white pb-20">
       <div
         className="pointer-events-none absolute inset-0 w-full bg-[length:100%_auto] bg-top bg-repeat"
-        style={{ backgroundImage: "url(/assets/news/Background.svg)" }}
+        style={{ backgroundImage: "url(/engineering/columns/listpage_bg.svg)" }}
       />
 
-      {/* 顶部标题栏 - 居中，带灰色箭头装饰 */}
+      {/* 顶部标题栏 */}
       <div className="sticky top-0 z-20 w-full bg-white/95 shadow-[0px_1px_10px_1px_rgba(20,155,255,0.12)] backdrop-blur-[2px]">
         <div className="mx-auto flex h-[54px] max-w-[1000px] items-center justify-center">
           <div className="flex items-center gap-1">
-            <h1 className="text-[20px] font-bold leading-none text-[#383838]">{title}</h1>
-            <span className="text-[26px] font-normal leading-none text-[#0071ef] translate-y-[-2px]">›</span>
+            <h1 className="text-[20px] font-bold leading-none">{title}</h1>
+            <Image 
+              src="/triangle.svg" 
+              width={14} 
+              height={14} 
+              alt="triangle" 
+              className="leading-none text-[#0071ef] translate-x-[8px]"
+            />
           </div>
         </div>
       </div>
 
-      {/* 列表内容 */}
       <div className="relative mx-auto max-w-[1000px] pt-8">
         <div className="bg-white px-10 py-8 shadow-sm">
           <div className="min-h-[400px] space-y-8">
@@ -105,12 +129,34 @@ export function ListPage({
             )}
           </div>
 
-          {/* 分页 */}
+          {/* 分页器 */}
           {items.length > 0 && (
-            <div className="mt-12 flex items-center justify-center gap-8 border-t border-dashed border-[#eee] pt-8">
-              <button type="button" className="flex h-8 w-8 items-center justify-center rounded-full text-[#999] hover:bg-[#f0f7ff] hover:text-[#0071ef]">‹</button>
-              <span className="text-[14px] font-bold text-[#333]">1 / 1</span>
-              <button type="button" className="flex h-8 w-8 items-center justify-center rounded-full text-[#999] hover:bg-[#f0f7ff] hover:text-[#0071ef]">›</button>
+            <div className="mt-12 flex items-center justify-center gap-6 border-t border-dashed border-[#eee] pt-8">
+              <button
+                type="button"
+                onClick={() => onPageChange?.(Math.max(1, currentPage - 1))}
+                disabled={currentPage === 1}
+                className={`transition-transform hover:scale-110 active:scale-95 ${
+                  currentPage === 1 ? "opacity-30 cursor-not-allowed" : "opacity-100"
+                }`}
+              >
+                <Image src="/engineering/left_arrow.svg" width={30} height={50} alt="prev" />
+              </button>
+
+              <span className="text-[16px] font-bold text-[#333] tracking-widest">
+                {currentPage} / {totalPages}
+              </span>
+
+              <button
+                type="button"
+                onClick={() => onPageChange?.(Math.min(totalPages, currentPage + 1))}
+                disabled={currentPage === totalPages}
+                className={`transition-transform hover:scale-110 active:scale-95 ${
+                  currentPage === totalPages ? "opacity-30 cursor-not-allowed" : "opacity-100"
+                }`}
+              >
+                <Image src="/engineering/right_arrow.svg" width={30} height={50} alt="next" />
+              </button>
             </div>
           )}
         </div>

@@ -35,3 +35,13 @@ export type ResearchTeamProject = {
   themeColor: string;  // 例如: "#CA3540" (用于渐变和文字)
   items: ResearchProjectContent[];
 };
+
+export interface ListPageItem {
+  id: string | number;
+  title: string;
+  date: string;
+  imageUrl?: string;
+  summary?: string;
+  category?: string;
+  link: string;
+}
