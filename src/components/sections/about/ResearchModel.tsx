@@ -63,7 +63,7 @@ function StudentStageCard({ phase, title, desc }: { phase: string; title: string
 
 export function ResearchModel() {
   return (
-    <section className="w-full py-[72px]">
+    <section className="w-full bg-white py-[72px]">
       <div className="mx-auto w-full max-w-[1440px] px-[56px]">
         <div className="mb-[34px] flex items-center gap-[14px]">
           <div className="h-[87px] w-[11px] bg-gradient-to-b from-[#0071EE] to-[#43C5AD]" />

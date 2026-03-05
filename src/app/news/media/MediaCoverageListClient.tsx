@@ -68,6 +68,7 @@ export function MediaCoverageListClient({
       title={title}
       items={items}
       emptyText={emptyText}
+      backHref="/news"
       renderItem={(item) => <MediaCard item={item} />}
     />
   );

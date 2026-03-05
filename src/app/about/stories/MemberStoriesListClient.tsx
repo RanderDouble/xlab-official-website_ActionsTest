@@ -60,6 +60,7 @@ export function MemberStoriesListClient({
       title={title}
       items={items}
       emptyText={emptyText}
+      backHref="/about"
       renderItem={(item) => <MemberStoryListCard item={item} />}
     />
   );

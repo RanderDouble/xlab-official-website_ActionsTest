@@ -1,6 +1,6 @@
 export function AboutHero() {
   return (
-    <section className="relative w-full overflow-hidden bg-gradient-to-b from-[#000000] to-[#0071EF] pt-[120px] pb-[72px]">
+    <section className="relative w-full h-250 overflow-hidden bg-gradient-to-b from-[#000000] to-[#0071EF] pt-[120px] pb-[72px]">
       <div className="pointer-events-none absolute inset-0">
         <div
           className="absolute -top-[220px] right-[-220px] h-[640px] w-[640px] rounded-full opacity-40"

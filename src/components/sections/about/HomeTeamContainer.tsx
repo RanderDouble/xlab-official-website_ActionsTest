@@ -73,7 +73,7 @@ export function HomeTeamContainer() {
 
   return (
     <section className="w-full bg-[#001731] text-white">
-      <div className="w-full max-w-[1440px] mx-auto px-[56px] py-[72px] flex flex-col items-center">
+      <div className="w-full h-250 max-w-[1440px] mx-auto px-[56px] py-[72px] flex flex-col items-center">
         <div className="flex flex-col items-center text-center gap-2.5">
           <img
             src="/assets/about/team/OurTeamIcon.svg"

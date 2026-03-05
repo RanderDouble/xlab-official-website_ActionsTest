@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import type { ReactNode } from "react";
@@ -71,6 +70,9 @@ interface ListPageProps {
   items: ListPageItem[];
   emptyText?: string;
   renderItem?: (item: ListPageItem) => ReactNode;
+  backHref?: string;
+  backLabel?: string;
+  showBackButton?: boolean;
   currentPage?: number;
   totalPages?: number;
   onPageChange?: (page: number) => void;
@@ -81,10 +83,15 @@ export function ListPage({
   items,
   emptyText = "暂无内容",
   renderItem,
+  backHref,
+  backLabel = "返回",
+  showBackButton = true,
   currentPage = 1,
   totalPages = 1,
   onPageChange,
 }: ListPageProps) {
+  const shouldShowBackButton = showBackButton && Boolean(backHref);
+
   return (
     <section className="relative min-h-screen w-full bg-white pb-20">
       <div
@@ -94,9 +101,21 @@ export function ListPage({
 
       {/* 顶部标题栏 */}
       <div className="sticky top-0 z-20 w-full bg-white/95 shadow-[0px_1px_10px_1px_rgba(20,155,255,0.12)] backdrop-blur-[2px]">
-        <div className="mx-auto flex h-[54px] max-w-[1000px] items-center justify-center">
-          <div className="flex items-center gap-1">
-            <h1 className="text-[20px] font-bold leading-none">{title}</h1>
+        <div className="mx-auto grid h-[54px] max-w-[1000px] grid-cols-[120px_1fr_120px] items-center">
+          <div className="pl-1">
+            {shouldShowBackButton ? (
+              <Link
+                href={backHref!}
+                aria-label="返回上一页"
+                className="inline-flex h-[32px] items-center gap-1 text-[14px] font-medium text-[#646464] transition-colors hover:text-[#0071ef]"
+              >
+                <span aria-hidden="true" className="translate-x-0.5 -translate-y-[1.5px] text-[18px] leading-none">‹</span>
+                <span>{backLabel}</span>
+              </Link>
+            ) : null}
+          </div>
+          <div className="flex items-center justify-center gap-1">
+            <h1 className="text-[20px] text-black font-bold leading-none">{title}</h1>
             <Image 
               src="/triangle.svg" 
               width={14} 
@@ -105,6 +124,8 @@ export function ListPage({
               className="leading-none text-[#0071ef] translate-x-[8px]"
             />
           </div>
+
+          <div aria-hidden="true" />
         </div>
       </div>
 

@@ -28,6 +28,7 @@ export default function LatestNewsPage() {
       title="最新发布"
       items={items}
       emptyText="暂无新闻"
+      backHref="/news"
     />
   );
 }
