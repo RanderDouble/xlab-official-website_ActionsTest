@@ -33,7 +33,7 @@ function NewsListItem({ item }: NewsListItemProps) {
   const content = (
     <article className="grid grid-cols-[1fr_auto] gap-3 border-b border-[#cecece] py-[14px] cursor-pointer hover:bg-gray-50 transition-colors">
       <div className="min-w-0">
-        <h3 className="truncate text-[18px] font-bold leading-[1.2] text-[#646464]">
+        <h3 className="truncate text-[18px] font-bold leading-[1.2] text-[#383838]">
           {item.title}
         </h3>
         <p className="mt-[8px] truncate text-[12px] font-bold leading-none text-[#646464]">

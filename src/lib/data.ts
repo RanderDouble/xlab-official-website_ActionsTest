@@ -857,25 +857,25 @@ export const HOME_BANNERS: Banner[] = [
     id: 1,
     label: "Banner 1",
     link: "#",
-    imageUrl: "/assets/home/tmp/banner.svg",
+    imageUrl: "/assets/home/banner/纳新进行时.svg",
   },
   {
     id: 2,
     label: "Banner 2",
     link: "#",
-    imageUrl: "/assets/home/tmp/Frame 101.svg",
+    imageUrl: "/assets/home/banner/解码未来.png",
   },
   {
     id: 3,
     label: "Banner 3",
     link: "#",
-    imageUrl: "/assets/home/tmp/banner.svg",
+    imageUrl: "/assets/home/banner/纳新进行时.svg",
   },
   {
     id: 4,
     label: "Banner 4",
     link: "#",
-    imageUrl: "/assets/home/tmp/Frame 101.svg",
+    imageUrl: "/assets/home/banner/解码未来.png",
   },
 ];
 
