@@ -6,7 +6,7 @@ export default function DeltaXPage() {
     <section className="w-full bg-white">
       <div className="max-w-7xl mx-auto px-4 md:px-8 py-12 space-y-6">
         <Link href="/ecosystem/innovation" className="text-sm text-gray-500 hover:text-blue-600">
-          &lt; 返回创新生态
+          &lt; 返回创业生态
         </Link>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">

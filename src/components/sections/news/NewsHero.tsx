@@ -44,7 +44,7 @@ export function NewsHero({
             />
             
             {/* 底部半透明遮罩与文字 */}
-            <div className="absolute inset-x-0 top-[65%] h-[35%] bg-[rgba(1,78,122,0.24)]">
+            <div className="absolute inset-x-0 top-[65%] h-[35%] bg-gradient-to-b from-[rgba(1,78,122,0.42)] to-[rgba(1,78,122,0.72)]">
               <div className="absolute left-[22px] top-[8%] max-w-[1114px] space-y-2">
                 {/* 使用提取的 props */}
                 <h1 className="text-[52px] font-bold leading-tight text-white">
@@ -56,13 +56,14 @@ export function NewsHero({
               </div>
 
               <div className="absolute bottom-4 right-[24px]">
-                <button 
+                <a
                   className="inline-flex h-[52px] items-center justify-center gap-3 rounded-full bg-gradient-to-r from-[#0071ef] to-[#149bff] px-8 text-[18px] font-bold text-white transition-shadow hover:shadow-lg" 
+                  href={linkUrl}
                   style={{ fontFamily: '"PingFang SC", "Hiragino Sans GB", "Source Han Sans SC", "Microsoft YaHei UI", sans-serif' }}
                 >
                   去看看
                   <span className="text-[18px]">&gt;</span>
-                </button>
+                </a>
               </div>
             </div>
 

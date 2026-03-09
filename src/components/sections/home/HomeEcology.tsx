@@ -3,7 +3,7 @@ import Link from "next/link";
 const ECOLOGY_CARDS = [
   { title: "科学研究", href: "/ecosystem/research", imageUrl: "/assets/home/ecosystem/科学研究.png" },
   { title: "工程实践", href: "/ecosystem/engineering", imageUrl: "/assets/home/ecosystem/工程实践.png" },
-  { title: "创新生态", href: "/ecosystem/innovation", imageUrl: "/assets/home/ecosystem/创新生态.png" },
+  { title: "创业生态", href: "/ecosystem/innovation", imageUrl: "/assets/home/ecosystem/创业生态.png" },
   { title: "灵感共生", href: "/ecosystem/life", imageUrl: "/assets/home/ecosystem/灵感共生.png" },
 ];
 

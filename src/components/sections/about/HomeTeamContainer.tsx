@@ -8,7 +8,7 @@ const DEPARTMENTS = [
     name: "运营团队",
     slogan: "孵化实验台 新媒全矩阵",
     introduction:
-      "运营团队对内负责实验室的日常运行，包括打卡、物资、财务、内建、活动策划等，对外担任项目、竞赛经理，推进项目高质量完成，搭建新媒体矩阵，实现品牌构建。",
+      "培养具有创新能力创业实力的创业者、管理者，用商学赋能科技，用思维促进变革",
     departmentImageUrl: "/assets/about/team/Operate.svg",
     branch: ["项目管理", "人力资源", "财务管理", "产品经理", "品牌策略"],
     branchIcon: [
@@ -25,7 +25,7 @@ const DEPARTMENTS = [
     name: "设计团队",
     slogan: "全流程设计 多样化领域",
     introduction:
-      "设计团队专注于视觉，交互，工业，服务设计四大领域，不断实践和创新，可以提供全流程多样化设计方案，包含：高质量的产品模型设计，静态/动态产品展示；企业级视觉识别系统，标识设计，宣传物料设计；完备的低/高保真交互原型设计，ui设计等。",
+      "培养多元的设计技能技巧，塑造专业的设计思维思考，用设计赋能创造与表达，力图打造审美天花板",
     departmentImageUrl: "/assets/about/team/Design.svg",
     branch: ["工业设计", "交互设计", "视觉设计"],
     branchIcon: [
@@ -40,7 +40,7 @@ const DEPARTMENTS = [
     name: "硬件团队",
     slogan: "未来工业宇宙的开拓者",
     introduction:
-      "硬件团队负责实验室硬件技术领域的研发。主要涉及硬件电路设计，嵌入式开发，机械设计，算法开发等等硬件技术领域。硬件技术团队的定位是通过自身的知识打造出有意义的硬件产品，将有价值以及未来可能有价值的产品研发并落地。",
+      "培养专业且全栈的硬件开发能力，用自己的技能创造出有意义的产品",
     departmentImageUrl: "/assets/about/team/Hardware.svg",
     branch: ["嵌入式", "嵌入式(L)", "硬件电路", "机电一体"],
     branchIcon: [
@@ -56,7 +56,7 @@ const DEPARTMENTS = [
     name: "软件团队",
     slogan: "未来软件生态的执匙者",
     introduction:
-      "软件团队负责工作以全流程软件开发为主，包括前端开发、后端开发、客户端开发，也包含一定的运维工作。软件团队拥有完备的培养路径，使得成员在开发过程中能够实现学练结合，在熟悉现代化的开发工具及流程的同时提升自己的能力水平及编码素养。",
+      "培养技术过硬、视野开阔、思考全面、勇于创新的大学生开发者",
     departmentImageUrl: "/assets/about/team/Software.svg",
     branch: ["前端开发", "后端开发", "运营维护"],
     branchIcon: [
@@ -82,7 +82,7 @@ export function HomeTeamContainer() {
           />
           <h1 className="text-3xl leading-[44px] font-bold">我们的团队</h1>
           <h2 className="text-sm leading-[21px] font-light opacity-70">
-            四大团队｜全员本科生｜学科交叉融合
+            学科交叉｜项目实际
           </h2>
         </div>
 
