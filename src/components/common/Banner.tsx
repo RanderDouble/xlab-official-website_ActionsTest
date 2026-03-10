@@ -12,12 +12,11 @@ export function Banner({
   alt = "banner",
 }: BannerProps) {
   return (
-    <div className="w-full flex justify-center px-6 my-10 relative">
+    <div className="w-full bg-white">
       <div
-        className={`relative overflow-hidden`}
+        className="relative w-full overflow-hidden"
         style={{
-          width: "1320px",
-          height: "567px",
+          aspectRatio: "1320 / 567",
         }}
       >
         <Image

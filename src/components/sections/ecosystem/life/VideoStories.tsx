@@ -93,7 +93,7 @@ export function VideoStories() {
                     poster={LIFE_VIDEOS_LIST[currentIdx].cover}
                     controls
                     preload="metadata"
-                    className="w-full h-full object-cover"
+                    className="w-full h-full object-contain"
                     playsInline
                     onPlay={handlePlay}
                     onPause={handlePause}

@@ -19,16 +19,16 @@ export function MessageBoard() {
   };
 
   const variants = {
-    // 1. 进入动画：保持 y: 31 以确保与侧边状态高度一致
+    // 1. 进入动画：从两侧滑入，初始比例较小
     enter: (custom: { direction: number; offset: number }) => ({
-      x: custom.direction === 1 ? 1200 : -1200,
+      x: custom.direction === 1 ? 800 : -800,
       opacity: 0,
-      scale: 0.5,
-      y: 31, 
+      scale: 0.6,
+      y: 31,
       zIndex: 10,
     }),
 
-    // 2. 中间状态：y 设为 0
+    // 2. 中间激活态：位于圆心，比例 1:1
     center: {
       x: 0,
       scale: 1,
@@ -37,20 +37,20 @@ export function MessageBoard() {
       opacity: 1,
     },
 
-    // 3. 两侧常驻态：y 设为 31 以实现底部对齐 (251px - 220px = 31px)
+    // 3. 两侧常驻态：缩放到 0.6 倍，y 轴下移对齐底边
     side: (custom: { offset: number }) => ({
-      x: custom.offset * 480,
-      scale: 0.75,
-      y: 31, 
+      x: custom.offset * 500, // 稍微缩小间距使画面更紧凑
+      scale: 0.6,
+      y: 31,
       zIndex: 10,
       opacity: 1,
     }),
 
-    // 4. 退出动画：水平飞出
+    // 4. 退出动画：直线滑出视野
     exit: (custom: { direction: number; offset: number }) => ({
-      x: custom.direction === 1 ? -1200 : 1200,
+      x: custom.direction === 1 ? -800 : 800,
       opacity: 0,
-      scale: 0.5,
+      scale: 0.6,
       y: 31,
       zIndex: 0,
     }),
@@ -62,8 +62,8 @@ export function MessageBoard() {
         <LogoWithTitle chineseText="留言板" englishText="Message Board" />
 
         <div className="relative mt-16 w-[1083px] h-[375px] mx-auto flex items-center justify-center">
-          {/* 背景层 */}
-          <div 
+          {/* 背景渐变层 */}
+          <div
             className="absolute inset-0 rounded-[25px] z-0"
             style={{
               background: `
@@ -93,24 +93,24 @@ export function MessageBoard() {
 
                 return (
                   <motion.div
-                    key={itemIndex}
+                    key={`${itemIndex}-${currentIndex}`}
                     custom={{ direction, offset }}
                     variants={variants}
                     initial="enter"
                     animate={isCenter ? "center" : "side"}
                     exit="exit"
                     transition={{
-                      x: { type: "spring", stiffness: 180, damping: 24 }, // 直线平移动画
-                      opacity: { duration: 0.3 },
+                      x: { type: "spring", stiffness: 200, damping: 25 },
                       scale: { duration: 0.4 },
-                      y: { duration: 0.4 } // 确保 y 轴切换平滑
+                      y: { duration: 0.4 }
                     }}
                     className="absolute"
                   >
-                    <div className={`relative ${isCenter ? 'w-[597px] h-[251px]' : 'w-[320px] h-[220px]'}`}>
+                    {/* 卡片容器：移除 overflow-hidden 以保证装饰物完整展示 */}
+                    <div className="relative w-[597px] h-[251px]">
                       
-                      {/* 右上角装饰：置于最顶层 */}
-                      <div className={`absolute ${isCenter ? '-top-12 -right-10 w-29 h-29' : '-top-8 -right-6 w-24 h-24'} z-[100] pointer-events-none`}>
+                      {/* 右上角装饰椭圆 */}
+                      <div className={`absolute -top-12 -right-10 w-28 h-28 z-[100] pointer-events-none`}>
                         <Image 
                           src="/life/message/decoration.svg" 
                           fill 
@@ -120,29 +120,28 @@ export function MessageBoard() {
                         />
                       </div>
 
-                      {isCenter ? (
-                        <motion.div
-                          initial={{ opacity: 0 }}
-                          animate={{ opacity: 1 }}
-                          transition={{ delay: 0.1 }}
-                          className="relative w-full h-full flex items-center justify-center"
-                        >
-                          <Image src="/life/message/center_card.svg" fill alt="card bg" priority className="-z-10" />
-                          <div className="w-full h-full p-12 flex flex-col justify-between relative z-10 text-left">
-                            <p className="text-[21px] leading-[1.7] text-black font-bold">
-                              {'　　' + item.content}
-                            </p>
-                            <div className="flex justify-between items-end">
-                              <span className="text-[24px] font-bold text-black">{item.author}</span>
-                              <span className="text-[24px] text-black font-bold">{item.role}</span>
-                            </div>
+                      {/* 统一渲染带内容的卡片 */}
+                      <div className="relative w-full h-full flex items-center justify-center">
+                        {/* 无论是否在中间，都渲染 center_card.svg 背景 */}
+                        <Image 
+                          src="/life/message/center_card.svg" 
+                          fill 
+                          alt="card bg" 
+                          priority 
+                          className={`-z-10 transition-opacity duration-300`} 
+                        />
+                        
+                        {/* 文本内容区域：通过 font-size 和 padding 在 side 状态下自动随容器缩放 */}
+                        <div className="w-full h-full p-12 flex flex-col justify-between relative z-10 text-left">
+                          <p className="text-[21px] leading-[1.7] text-black font-bold">
+                            {'　　' + item.content}
+                          </p>
+                          <div className="flex justify-between items-end">
+                            <span className="text-[24px] font-bold text-black">{item.author}</span>
+                            <span className="text-[24px] text-black font-bold">{item.role}</span>
                           </div>
-                        </motion.div>
-                      ) : (
-                        <div className="w-full h-full relative">
-                          <Image src="/life/message/omission_card.svg" fill alt="omission" className="object-cover" />
                         </div>
-                      )}
+                      </div>
                     </div>
                   </motion.div>
                 );
