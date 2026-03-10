@@ -474,6 +474,13 @@ export const SPECIAL_COLUMNS = [
 
 export const THREE_SOUNDS = [
   {
+    id: 5,
+    title: "X-Lab×万事利丝绸董事长李建华：在丝绸的经纬之间，织一场跨越千年的创新对话",
+    imageUrl: "/engineering/three_sounds/wanshili.jpg",
+    link: "https://mp.weixin.qq.com/s/7rNqRXQWTYYdCYtqua2WzQ",
+    date: "2026-2-28"
+  },
+  {
     id: 4,
     title: "6元买断制 App 如何单挑亿万级算法？ NoFeed 开发者的“文艺复兴式”破局之道",
     imageUrl: "/engineering/three_sounds/nofeed.jpg",
@@ -633,21 +640,21 @@ export const PARTNER_NEWS = [
     title: "Delta X ✕ Bonjour! 战略合作正式达成！",
     brief: "在2026年的开端，Delta X 迭代未来与深受 Gen Z 喜爱的「Bonjour!数字名片」正式达成深度战略合作。打破传统创业孵化与社交的边界，为年轻创造者们打造一条从“想法”到“团队”再到“项目”的全新路径。",
     image: "innovation/partner_news/Bonjour.png",
-    link: "https://ucns4q7cn89b.feishu.cn/wiki/Hdpmww0KHiEo22k4fbKcsGAPnRd"
+    link: "https://mp.weixin.qq.com/s/_EuwZO-KCEMsYsDl72YMkw"
   },
   {
     id: 2,
     title: "Delta X 迭代未来与Datawhale社区正式达成深度合作",
     brief: "2026年伊始，Delta X 迭代未来与国内领先的AI开源学习社区Datawhale正式达成深度战略合作。Datawhale作为国内领先AI开源学习社区，致力于降低AI学习门槛，连接高校、产业与学习者。Delta X则作为其核心商业化运营与孵化执行伙伴，承接社区溢出的优秀人才与项目，共同构建“学习者→开发者→创业者”的人才全链路。",
     image: "innovation/partner_news/Datawhale.png",
-    link: "https://ucns4q7cn89b.feishu.cn/wiki/AiedwEEg4iBbokkzBZLc5webnpf"
+    link: "https://mp.weixin.qq.com/s/RUOCnNwnoAAmYU3LpjW9Xg"
   },
   {
     id: 3,
     title: "实验室正式成为“花猫学习中心首批AI生态伙伴”",
     brief: "12月28日，株洲AI创新大会暨AI花猫社区启动仪式举行，浙江大学启真交叉学科创新创业实验室正式成为“花猫学习中心首批AI生态伙伴”，并被认证为首批“AI+X产教联盟实训基地”。",
     image: "innovation/partner_news/HuaMao.png",
-    link: "https://zju-xlab.feishu.cn/wiki/ZOBPw8HzMi8GFVk7jkicteq5nWc"
+    link: "https://mp.weixin.qq.com/s/n3YcDWVRcvXn6oot29JmBQ"
   }
 ];
 
@@ -825,41 +832,31 @@ export const TESTIMONIALS = [
     id: 1,
     content: "天南海北的比赛是共同奋战的印记，实验室也逐渐走向更远的地方。如果坚定这件事是对的，那就坚定走下去。",
     author: "王振阳",
-    role: "X-lab创始人",
+    role: "X-Lab创始人",
   },
   {
     id: 2,
     content: "后来，我渐渐的看到越来越多的实验室的大小朋友，选择在自己的领域内走上一条独一无二的道路。在孤独的前进路上，有一群孤独的人相伴，彼此相依也便不孤独。",
     author: "黄睿哲",
-    role: "X-laber",
+    role: "X-Laber",
   },
   {
     id: 3,
-    content: "总得来说X-Lab将会是我们这批人在浙大所能留下的，最浓墨厚彩的一笔；但是 “革命尚未成功，同志仍需努力！”",
+    content: "总的来说X-Lab将会是我们这批人在浙大所能留下的，最浓墨厚彩的一笔；但是 ‘革命尚未成功，同志仍需努力！’",
     author: "文豪",
-    role: "X-laber",
+    role: "X-Laber",
   },
   {
     id: 4,
-    content: "就像那句话说的一样，“在卓越气息弥漫的地方，永远有在家之感 ”。",
+    content: "就像那句话说的一样，‘在卓越气息弥漫的地方，永远有在家之感 ’。",
     author: "马卓涵",
-    role: "X-laber",
+    role: "X-Laber",
   },
   {
     id: 5,
     content: "如今，Lab于我而言，像是校园里的一个小小港湾。累了可以来歇脚，迷茫时可以在这里静静思考。",
     author: "骆佳静",
-    role: "X-laber",
-  },
-];
-
-export const ABOUT_MEMBER_STORIES: MemberStory[] = [
-  {
-    id: 1,
-    title: "Outlier",
-    summary: "诺亚方舟第三期",
-    imageUrl: "/assets/about/storys.jpg",
-    link: "https://mp.weixin.qq.com/s/H5_yvOeehNOhEMMYZvWFTw",
+    role: "X-Laber",
   },
 ];
 
@@ -1353,6 +1350,10 @@ export const INDUSTRY_MENTORS: Mentor[] = [
     imageUrl: "/assets/home/resources/qxl.png",
   },
 ];
+
+// ==================== 成员故事 ====================
+
+export const ABOUT_MEMBER_STORIES: MemberStory[] = [];
 
 // ==================== 文章详情数据（模块化导出）====================
 

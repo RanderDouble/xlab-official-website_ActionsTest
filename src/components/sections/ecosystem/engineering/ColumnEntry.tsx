@@ -28,7 +28,6 @@ export function ColumnEntry() {
 
   return (
     <section className="w-full bg-white relative overflow-hidden py-12 md:py-24">
-      {/* 大背景图：左移调整 - 从right-0改为right-[8%]，宽度微调为3/4更自然 */}
       <div 
         className="absolute right-[8%] top-0 h-full w-3/4 pointer-events-none z-0"
         style={{ maxWidth: '1200px' }} // 防止过大

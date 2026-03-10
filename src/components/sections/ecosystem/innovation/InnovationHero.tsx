@@ -92,7 +92,7 @@ export function InnovationHero() {
             className="absolute text-gray-500 text-base font-bold leading-relaxed z-50"
             style={{
               left: "150px",
-              top: "240px", // 下移20px
+              top: "240px",
               width: "540px",
             }}
           >
@@ -102,7 +102,7 @@ export function InnovationHero() {
           {/* 了解详情按钮：整体右移并下移 */}
           <Link
             href={INNOVATION_HERO.link}
-            className="absolute flex items-center justify-center bg-black text-white text-lg font-bold rounded-full shadow-lg hover:shadow-xl transition-all z-50"
+            className="absolute flex items-center justify-center bg-black text-white text-lg font-bold rounded-full shadow-lg duration-300 hover:scale-105  transition-all z-50"
             style={{
               width: "198.25px",
               height: "47px",

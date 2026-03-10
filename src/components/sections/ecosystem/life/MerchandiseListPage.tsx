@@ -4,7 +4,6 @@ import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { LAB_MERCH_LIST_DATA } from "@/lib/data";
-import Link from "next/link";
 
 const ITEMS_PER_PAGE = 4;
 

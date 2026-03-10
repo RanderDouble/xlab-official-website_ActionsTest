@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import type { ReactNode } from "react";
@@ -53,7 +54,7 @@ function DefaultListItemCard({ item }: { item: ListPageItem }) {
             <p className="mt-2 line-clamp-2 text-[13px] text-[#666]">{item.summary}</p>
           )}
 
-          {/* 文本改成“查看全文” */}
+          {/* 文本改成"查看全文" */}
           <div className="mt-auto mb-4"> 
             <span className="text-[13px] font-medium text-[#666] transition-colors group-hover:text-[#0071ef]">
               查看全文
@@ -76,6 +77,7 @@ interface ListPageProps {
   currentPage?: number;
   totalPages?: number;
   onPageChange?: (page: number) => void;
+  itemsPerPage?: number; // 每页显示的卡片数，不传或传0表示显示所有卡片
 }
 
 export function ListPage({
@@ -86,11 +88,37 @@ export function ListPage({
   backHref,
   backLabel = "返回",
   showBackButton = true,
-  currentPage = 1,
-  totalPages = 1,
-  onPageChange,
+  itemsPerPage,
 }: ListPageProps) {
   const shouldShowBackButton = showBackButton && Boolean(backHref);
+  const [currentPage, setCurrentPage] = useState(1);
+  const hasInitialData = useRef(false); // 追踪是否已有初始数据
+
+  // 计算总页数
+  const totalPages = itemsPerPage && itemsPerPage > 0
+    ? Math.ceil(items.length / itemsPerPage)
+    : 1;
+
+  // 根据当前页码切片 items
+  const displayedItems = itemsPerPage && itemsPerPage > 0
+    ? items.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage)
+    : items;
+
+  // 当 items 变化时重置到第一页（仅当不是首次加载时）
+  useEffect(() => {
+    if (hasInitialData.current && items.length > 0) {
+      setCurrentPage(1);
+    }
+    if (!hasInitialData.current && items.length > 0) {
+      hasInitialData.current = true;
+    }
+  }, [items]);
+
+  // 页面切换处理
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
   return (
     <section className="relative min-h-screen w-full bg-white pb-20">
@@ -132,7 +160,7 @@ export function ListPage({
       <div className="relative mx-auto max-w-[1000px] pt-8">
         <div className="bg-white px-10 py-8 shadow-sm">
           <div className="min-h-[400px] space-y-8">
-            {items.map((item) =>
+            {displayedItems.map((item) =>
               renderItem ? (
                 <div key={item.id}>{renderItem(item)}</div>
               ) : (
@@ -140,7 +168,7 @@ export function ListPage({
               )
             )}
 
-            {items.length === 0 && (
+            {displayedItems.length === 0 && (
               <div className="flex h-full min-h-[320px] w-full items-center justify-center">
                 <div className="flex flex-col items-center gap-2 text-[#b6b6b6]">
                   <span className="text-[32px] opacity-50">⟡</span>
@@ -151,35 +179,33 @@ export function ListPage({
           </div>
 
           {/* 分页器 */}
-          {items.length > 0 && (
-            <div className="mt-12 flex items-center justify-center gap-6 border-t border-dashed border-[#eee] pt-8">
-              <button
-                type="button"
-                onClick={() => onPageChange?.(Math.max(1, currentPage - 1))}
-                disabled={currentPage === 1}
-                className={`transition-transform hover:scale-110 active:scale-95 ${
-                  currentPage === 1 ? "opacity-30 cursor-not-allowed" : "opacity-100"
-                }`}
-              >
-                <Image src="/engineering/left_arrow.svg" width={30} height={50} alt="prev" />
-              </button>
+          <div className="mt-12 flex items-center justify-center gap-6 border-t border-dashed border-[#eee] pt-8">
+            <button
+              type="button"
+              onClick={() => handlePageChange(Math.max(1, currentPage - 1))}
+              disabled={currentPage === 1}
+              className={`transition-transform hover:scale-110 active:scale-95 ${
+                currentPage === 1 ? "opacity-30 cursor-not-allowed" : "opacity-100"
+              }`}
+            >
+              <Image src="/engineering/left_arrow.svg" width={30} height={50} alt="prev" />
+            </button>
 
-              <span className="text-[16px] font-bold text-[#333] tracking-widest">
-                {currentPage} / {totalPages}
-              </span>
+            <span className="text-[16px] font-bold text-[#333] tracking-widest">
+              {currentPage} / {totalPages}
+            </span>
 
-              <button
-                type="button"
-                onClick={() => onPageChange?.(Math.min(totalPages, currentPage + 1))}
-                disabled={currentPage === totalPages}
-                className={`transition-transform hover:scale-110 active:scale-95 ${
-                  currentPage === totalPages ? "opacity-30 cursor-not-allowed" : "opacity-100"
-                }`}
-              >
-                <Image src="/engineering/right_arrow.svg" width={30} height={50} alt="next" />
-              </button>
-            </div>
-          )}
+            <button
+              type="button"
+              onClick={() => handlePageChange(Math.min(totalPages, currentPage + 1))}
+              disabled={currentPage === totalPages}
+              className={`transition-transform hover:scale-110 active:scale-95 ${
+                currentPage === totalPages ? "opacity-30 cursor-not-allowed" : "opacity-100"
+              }`}
+            >
+              <Image src="/engineering/right_arrow.svg" width={30} height={50} alt="next" />
+            </button>
+          </div>
         </div>
       </div>
     </section>
