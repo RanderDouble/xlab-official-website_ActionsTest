@@ -33,7 +33,7 @@ function extractMediaTitle(content: string): string {
 function mediaQuoteToListItem(item: MediaQuote): ListPageItem {
   return {
     id: item.id,
-    title: extractMediaTitle(item.content),
+    title: item.title || extractMediaTitle(item.content),
     date: item.date,
     summary: item.content,
     category: item.mediaName,

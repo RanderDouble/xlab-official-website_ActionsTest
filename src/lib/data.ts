@@ -99,7 +99,7 @@ export const NEWS_LIST: NewsItem[] = [
     title: "2025年终总结",
     date: "2026-02-16",
     type: "text",
-    summary: "执炬平明见远山",
+    summary: "三载耕耘，以交叉为刃破学科之壁；今朝共聚，用创新为火育未来之才。",
     category: "人物",
     link: "https://mp.weixin.qq.com/s/h8ci0ZGL4cKvgEljAtda7Q",
   },
@@ -109,9 +109,9 @@ export const NEWS_LIST: NewsItem[] = [
  * 新闻Hero区域数据
  */
 export const NEWS_HERO = {
-  title: "交叉破壁，产学育才",
+  title: "2025 X-Lab 年终总结",
   description:
-    "2025浙江大学启真交叉学科创新创业实验室生态交流会暨成立三周年总结会议召开",
+    "三载耕耘，以交叉为刃破学科之壁；今朝共聚，用创新为火育未来之才。",
   imageSrc: "/assets/news/banner.jpg",
   linkUrl: "https://mp.weixin.qq.com/s/j-Dd7lQEdvhCtvroi_EuXg",
 };
@@ -128,7 +128,7 @@ export const ACTIVITIES: Activity[] = [
     imageUrl: "/assets/news/activities/1.png",
     ctaLabel: "立即报名",
     link: "https://mp.weixin.qq.com/s/f6hlYWj1Ml4aD8fBt1v9EA",
-    category: "教育",
+    category: "实践",
   },
   {
     id: 2,
@@ -148,7 +148,7 @@ export const ACTIVITIES: Activity[] = [
     imageUrl: "/assets/news/activities/3.png",
     ctaLabel: "查看详情",
     link: "https://mp.weixin.qq.com/s/Bj_KBNRwHmGLViaLZUHg6A",
-    category: "成果",
+    category: "实践",
   },
   {
     id: 4,
@@ -158,17 +158,17 @@ export const ACTIVITIES: Activity[] = [
     imageUrl: "/assets/news/activities/4.png",
     ctaLabel: "查看详情",
     link: "https://mp.weixin.qq.com/s/YZdyPd3XShDWGT7GZyX1cw",
-    category: "实验成果",
+    category: "成果",
   },
   {
     id: 5,
-    title: "华五AI+X微专业·创新实训营",
+    title: "华五AI+X微专业·创新实训营等你加入！",
     date: "2025-11-20",
     status: "ended",
     imageUrl: "/assets/news/activities/5.png",
     ctaLabel: "查看详情",
     link: "https://mp.weixin.qq.com/s/NYGAlGHa87-PIlQxhD1QTw",
-    category: "教育",
+    category: "实践",
   },
   {
     id: 6,
@@ -188,7 +188,7 @@ export const ACTIVITIES: Activity[] = [
     imageUrl: "/assets/news/activities/7.png",
     ctaLabel: "查看详情",
     link: "https://mp.weixin.qq.com/s/K3DUmU96_zr8TWrImj57ZQ",
-    category: "教学",
+    category: "教育",
   },
   {
     id: 8,
@@ -198,7 +198,7 @@ export const ACTIVITIES: Activity[] = [
     imageUrl: "/assets/news/activities/8.png",
     ctaLabel: "查看详情",
     link: "https://mp.weixin.qq.com/s/VmHoO87zJxBpT3VkSvBqPQ",
-    category: "实验成果",
+    category: "实践",
   },
   {
     id: 9,
@@ -207,7 +207,7 @@ export const ACTIVITIES: Activity[] = [
     status: "ended",
     imageUrl: "/assets/news/activities/9.png",
     ctaLabel: "查看详情",
-    link: "hhttps://mp.weixin.qq.com/s/QlCzSe-VAD2HWaOJ46xULw",
+    link: "https://mp.weixin.qq.com/s/QlCzSe-VAD2HWaOJ46xULw",
     category: "教育",
   },
   {
@@ -228,7 +228,7 @@ export const ACTIVITIES: Activity[] = [
     imageUrl: "/assets/news/activities/11.png",
     ctaLabel: "查看详情",
     link: "https://mp.weixin.qq.com/s/V40s37_N-VJuhAy-qUxAtg",
-    category: "教学",
+    category: "教育",
   },
 ];
 
@@ -238,25 +238,30 @@ export const ACTIVITIES: Activity[] = [
 export const MEDIA_QUOTES: MediaQuote[] = [
   {
     id: 1,
-    content: "三个零零后的元宇宙社交实验：向内看，也是一种Meta",
-    mediaName: "出色WSJ中文版",
+    title: "三个零零后的元宇宙社交实验：向内看，也是一种Meta",
+    content:
+      "向内看，解决元问题。现在是万物即可元宇宙的年代，但是具体践行时却大同小异，各有千秋。三个来自浙江大学的零零后便踏入元宇宙中社交实验，真正解决以人单位、以自我为起点的元问题……",
+    mediaName: "华尔街日报",
     date: "2025-10-01",
     logoUrl: "",
-    link: "https://www.imspm.com/yejiezonghe/139530.html",
+    link: "https://www.woshipm.com/it/5331254.html",
   },
   {
     id: 2,
-    content:
+    title:
       "浙大团队一个元宇宙宠物项目，获苹果移动应用创新赛最具创新奖，吸引10多家风投追着投",
+    content: "……这些巧妙的小设计，也让每一个用户都能更加了解自己。",
     mediaName: "钱江晚报",
     date: "2021-12-16",
     logoUrl: "",
-    link: "https://www.toutiao.com/article/7042233108749353479/?wid=1772626766516",
+    link: "https://www.toutiao.com/article/7042233108749353479/#:~:text=%E6%9C%80%E7%BB%88%EF%BC%8C%E6%9D%A5%E8%87%AA%E6%B5%99%E6%B1%9F%E5%A4%A7%E5%AD%A6%E7%9A%84%E4%BD%9C%E5%93%81%E3%80%8A%E8%B0%93%E5%B0%94%E3%80%8B%E8%8E%B7%E5%BE%97%E4%BA%86%E6%9C%80%E5%85%B7%E5%88%9B%E6%96%B0%E5%A5%96%E5%92%8C%E4%B8%80%E7%AD%89%E5%A5%96%EF%BC%9B%E6%9D%A5%E8%87%AA%E5%8D%8E%E4%B8%AD%E7%A7%91%E6%8A%80%E5%A4%A7%E5%AD%A6%E5%92%8C%E6%AD%A6%E6%B1%89%E7%BA%BA%E7%BB%87%E5%A4%A7%E5%AD%A6%E7%9A%84%E4%BD%9C%E5%93%81%E3%80%8A%E5%8D%B3%E6%8B%8D%E5%8D%B3%E5%94%B1%E3%80%8B%E3%80%81%E6%9D%A5%E8%87%AA%E5%8D%8E%E4%B8%AD%E7%A7%91%E6%8A%80%E5%A4%A7%E5%AD%A6%E7%9A%84%E4%BD%9C%E5%93%81%E3%80%8A%E8%AE%B0%E5%BF%86%E8%BE%BE%E4%BA%BA%E3%80%8B%E4%BB%A5%E5%8F%8A%E6%9D%A5%E8%87%AA%E4%B8%8A%E6%B5%B7%E4%BA%A4%E9%80%9A%E5%A4%A7%E5%AD%A6%E7%9A%84%E4%BD%9C%E5%93%81%E3%80%8A%E6%8B%BE%E5%BF%86%E2%80%94%E2%80%94%E8%AE%A4%E7%9F%A5%E9%9A%9C%E7%A2%8D%E6%97%A9%E7%AD%9B%E5%BA%94%E7%94%A8%E3%80%8B%E8%8E%B7%E5%BE%97%E4%BA%86%E4%B8%80%E7%AD%89%E5%A5%96%E3%80%82,%E5%8F%A6%E5%A4%96%E5%9C%A8%E2%80%9C%E5%85%83%E5%AE%87%E5%AE%99%E2%80%9D%E7%AD%89%E6%A6%82%E5%BF%B5%E6%97%A5%E7%9B%8A%E7%81%AB%E7%88%86%E7%9A%84%E5%BD%93%E4%B8%8B%EF%BC%8C%E4%BB%8A%E5%B9%B4%E7%A7%BB%E5%8A%A8%E5%BA%94%E7%94%A8%E5%88%9B%E6%96%B0%E8%B5%9B%E8%BF%98%E6%96%B0%E5%A2%9E%E4%BA%86AR%E8%B5%9B%E9%81%93%EF%BC%8C%E6%9D%A5%E8%87%AA%E6%B5%99%E6%B1%9F%E5%A4%A7%E5%AD%A6%E7%9A%84%E4%BD%9C%E5%93%81%E3%80%8AARCT%E2%80%94%E2%80%94%E5%88%9B%E9%80%A0%E5%9F%8E%E5%B8%82%E6%96%B0%E8%A7%86%E7%95%8C%E3%80%8B%E8%8E%B7%E5%BE%97AR%E8%B5%9B%E9%81%93%E4%B8%80%E7%AD%89%E5%A5%96%E3%80%82",
   },
   {
     id: 3,
-    content:
+    title:
       "灵活“小胖墩”现身养老院，还能用杭州话唠嗑！浙大“00后”团队的设计，实用！",
+    content:
+      "……将自己掌握的专业知识运用于机器人，通过自己的努力，为机器人与智慧医疗的结合开拓出一条路，让“X-Spider”普及到老年人的生活中。",
     mediaName: "浙江大学",
     date: "2021-11-01",
     logoUrl: "",
@@ -264,7 +269,9 @@ export const MEDIA_QUOTES: MediaQuote[] = [
   },
   {
     id: 4,
-    content: "在创新中成长 在奋斗中出彩",
+    title: "在创新中成长 在奋斗中出彩",
+    content:
+      "面向视障者研制无障碍智能辅具、运用 “端云融合” 技术实现性能与续航平衡，浙江大学本科生陈奕好与同伴将灵光一闪的点子，转化为具有社会价值的科技产品……",
     mediaName: "人民日报",
     date: "2025-10-17",
     logoUrl: "",
@@ -272,7 +279,9 @@ export const MEDIA_QUOTES: MediaQuote[] = [
   },
   {
     id: 5,
-    content: "青年创客亮剑！大创赛成果展现硬核新科技",
+    title: "青年创客亮剑！大创赛成果展现硬核新科技",
+    content:
+      "聚焦特殊群体需求与民生安全，青年团队用技术书写社会责任。浙江大学Voxsee团队的颈挂式无障碍智能辅具，充满了浓重的人文情怀。",
     mediaName: "人民网",
     date: "2025-10-15",
     logoUrl: "",
@@ -280,7 +289,9 @@ export const MEDIA_QUOTES: MediaQuote[] = [
   },
   {
     id: 6,
-    content: "创新千帆进 争做弄潮儿——中国国际大学生创新大赛（2025）观察",
+    title: "创新千帆进，争做弄潮儿",
+    content:
+      "在浙江大学，启真交叉学科创新创业实验室会聚30多个不同专业的本科生，帮助他们“组团”创新创业……",
     mediaName: "中国教育报",
     date: "2025-10-16",
     logoUrl: "",
