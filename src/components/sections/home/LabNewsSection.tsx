@@ -10,6 +10,7 @@ import type { LabNews } from "@/types";
 const IMAGE_CARD_RATIO = 629 / 317;
 const CARD_GAP = 11;
 const TRANSITION_DURATION = 500;
+const AUTOPLAY_INTERVAL = 4500;
 const RIGHT_EDGE_GUTTER = 16;
 
 // ==================== Utility Functions ====================
@@ -32,7 +33,7 @@ function NewsListItem({ item }: NewsListItemProps) {
   const content = (
     <article className="grid grid-cols-[1fr_auto] gap-3 border-b border-[#cecece] py-[14px] cursor-pointer hover:bg-gray-50 transition-colors">
       <div className="min-w-0">
-        <h3 className="truncate text-[18px] font-bold leading-[1.2] text-[#646464]">
+        <h3 className="truncate text-[18px] font-bold leading-[1.2] text-[#383838]">
           {item.title}
         </h3>
         <p className="mt-[8px] truncate text-[12px] font-bold leading-none text-[#646464]">
@@ -65,8 +66,7 @@ interface NewsCardProps {
 
 function NewsCard({ item, cardWidth, isFirst, cardRef }: NewsCardProps) {
   const imageSrc = resolveImageSrc(item.imageUrl);
-
-  return (
+  const content = (
     <article
       ref={isFirst ? cardRef : undefined}
       className="relative shrink-0 overflow-hidden rounded-[10px]"
@@ -97,6 +97,21 @@ function NewsCard({ item, cardWidth, isFirst, cardRef }: NewsCardProps) {
       </div>
     </article>
   );
+
+  if (item.link) {
+    return (
+      <a
+        href={item.link}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="block shrink-0 cursor-pointer transition-opacity hover:opacity-95"
+      >
+        {content}
+      </a>
+    );
+  }
+
+  return content;
 }
 
 // ==================== Main Component ====================
@@ -137,6 +152,17 @@ export function LabNewsSection() {
     window.addEventListener("resize", recalcStepSize);
     return () => window.removeEventListener("resize", recalcStepSize);
   }, [recalcStepSize]);
+
+  useEffect(() => {
+    if (!stepSize || slides.length <= 1) return;
+    const timer = window.setInterval(() => {
+      if (isAnimatingRef.current) return;
+      isAnimatingRef.current = true;
+      setCurrentIndex((prev) => prev + 1);
+    }, AUTOPLAY_INTERVAL);
+
+    return () => window.clearInterval(timer);
+  }, [stepSize, slides.length]);
 
   const resetTo = useCallback((nextIndex: number) => {
     setIsTransitioning(false);

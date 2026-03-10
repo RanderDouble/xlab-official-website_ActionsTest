@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useRef } from "react";
 import { ABOUT_MEMBER_STORIES } from "@/lib/data";
 
 function StoryCard({
@@ -51,138 +50,6 @@ function StoryCard({
 
 export function MemberStories() {
   const stories = ABOUT_MEMBER_STORIES;
-  const scrollContainerRef = useRef<HTMLDivElement>(null);
-  const trackRef = useRef<HTMLDivElement>(null);
-  const thumbRef = useRef<HTMLDivElement>(null);
-  const dragStateRef = useRef({
-    isDragging: false,
-    startX: 0,
-    startLeft: 0,
-  });
-
-  useEffect(() => {
-    const scrollElement = scrollContainerRef.current;
-    const trackElement = trackRef.current;
-    const thumbElement = thumbRef.current;
-    if (!scrollElement || !trackElement || !thumbElement) {
-      return;
-    }
-
-    const syncThumb = () => {
-      const { scrollLeft, scrollWidth, clientWidth } = scrollElement;
-      const trackWidth = trackElement.clientWidth;
-      const maxScrollLeft = Math.max(scrollWidth - clientWidth, 0);
-
-      if (maxScrollLeft <= 0) {
-        thumbElement.style.width = `${trackWidth}px`;
-        thumbElement.style.transform = "translateX(0px)";
-        thumbElement.dataset.left = "0";
-        thumbElement.dataset.width = `${trackWidth}`;
-        return;
-      }
-
-      const visualThumbWidth = Math.max(
-        72,
-        Math.min(120, (clientWidth / scrollWidth) * trackWidth),
-      );
-      const maxThumbLeft = Math.max(trackWidth - visualThumbWidth, 0);
-      const thumbLeft = (scrollLeft / maxScrollLeft) * maxThumbLeft;
-
-      thumbElement.style.width = `${visualThumbWidth}px`;
-      thumbElement.style.transform = `translateX(${thumbLeft}px)`;
-      thumbElement.dataset.left = `${thumbLeft}`;
-      thumbElement.dataset.width = `${visualThumbWidth}`;
-    };
-
-    const onScroll = () => {
-      syncThumb();
-    };
-
-    const onResize = () => {
-      syncThumb();
-    };
-
-    const onMouseMove = (event: MouseEvent) => {
-      if (!dragStateRef.current.isDragging) {
-        return;
-      }
-
-      const trackWidth = trackElement.clientWidth;
-      const thumbWidth = Number(thumbElement.dataset.width ?? "0");
-      const maxThumbLeft = Math.max(trackWidth - thumbWidth, 0);
-      const deltaX = event.clientX - dragStateRef.current.startX;
-      const nextThumbLeft = Math.min(
-        Math.max(dragStateRef.current.startLeft + deltaX, 0),
-        maxThumbLeft,
-      );
-
-      const maxScrollLeft = Math.max(
-        scrollElement.scrollWidth - scrollElement.clientWidth,
-        0,
-      );
-      const nextScrollLeft =
-        maxThumbLeft === 0 ? 0 : (nextThumbLeft / maxThumbLeft) * maxScrollLeft;
-      scrollElement.scrollLeft = nextScrollLeft;
-    };
-
-    const onMouseUp = () => {
-      dragStateRef.current.isDragging = false;
-      thumbElement.style.cursor = "grab";
-      document.body.style.userSelect = "";
-    };
-
-    const onTrackClick = (event: MouseEvent) => {
-      if (dragStateRef.current.isDragging || event.target === thumbElement) {
-        return;
-      }
-
-      const trackRect = trackElement.getBoundingClientRect();
-      const clickX = event.clientX - trackRect.left;
-      const thumbWidth = Number(thumbElement.dataset.width ?? "0");
-      const trackWidth = trackElement.clientWidth;
-      const maxThumbLeft = Math.max(trackWidth - thumbWidth, 0);
-      const nextThumbLeft = Math.min(
-        Math.max(clickX - thumbWidth / 2, 0),
-        maxThumbLeft,
-      );
-
-      const maxScrollLeft = Math.max(
-        scrollElement.scrollWidth - scrollElement.clientWidth,
-        0,
-      );
-      const nextScrollLeft =
-        maxThumbLeft === 0 ? 0 : (nextThumbLeft / maxThumbLeft) * maxScrollLeft;
-
-      scrollElement.scrollTo({ left: nextScrollLeft, behavior: "smooth" });
-    };
-
-    const onThumbMouseDown = (event: MouseEvent) => {
-      event.preventDefault();
-      dragStateRef.current.isDragging = true;
-      dragStateRef.current.startX = event.clientX;
-      dragStateRef.current.startLeft = Number(thumbElement.dataset.left ?? "0");
-      thumbElement.style.cursor = "grabbing";
-      document.body.style.userSelect = "none";
-    };
-
-    syncThumb();
-    scrollElement.addEventListener("scroll", onScroll);
-    window.addEventListener("resize", onResize);
-    window.addEventListener("mousemove", onMouseMove);
-    window.addEventListener("mouseup", onMouseUp);
-    trackElement.addEventListener("click", onTrackClick);
-    thumbElement.addEventListener("mousedown", onThumbMouseDown);
-
-    return () => {
-      scrollElement.removeEventListener("scroll", onScroll);
-      window.removeEventListener("resize", onResize);
-      window.removeEventListener("mousemove", onMouseMove);
-      window.removeEventListener("mouseup", onMouseUp);
-      trackElement.removeEventListener("click", onTrackClick);
-      thumbElement.removeEventListener("mousedown", onThumbMouseDown);
-      document.body.style.userSelect = "";
-    };
-  }, [stories.length]);
 
   return (
     <section className="relative z-30 mt-[-300px] w-full bg-white py-[40px]">
@@ -205,34 +72,17 @@ export function MemberStories() {
             <span className="text-lg leading-none text-[#0071ef]">&gt;</span>
           </Link>
         </div>
-        <div className="mt-8 overflow-visible">
-          <div
-            ref={scrollContainerRef}
-            className="hide-scrollbar flex overflow-x-auto overflow-y-hidden px-[2px] py-[6px]"
-          >
-            <div className="flex gap-[30px]">
-              {stories.map((story) => (
-                <StoryCard
-                  key={story.id}
-                  title={story.title}
-                  summary={story.summary}
-                  imageUrl={story.imageUrl}
-                  link={story.link}
-                />
-              ))}
-            </div>
-          </div>
-        </div>
-        <div className="mt-4 flex justify-center">
-          <div
-            ref={trackRef}
-            className="relative h-[10px] w-[640px] rounded-full bg-[#D9D9D9]"
-          >
-            <div
-              ref={thumbRef}
-              className="absolute left-0 top-0 h-[10px] rounded-full bg-[#646464]"
-              style={{ width: "88px", cursor: "grab" }}
-            />
+        <div className="mt-8 px-[2px] py-[6px]">
+          <div className="flex flex-wrap items-start gap-[30px]">
+            {stories.map((story) => (
+              <StoryCard
+                key={story.id}
+                title={story.title}
+                summary={story.summary}
+                imageUrl={story.imageUrl}
+                link={story.link}
+              />
+            ))}
           </div>
         </div>
       </div>

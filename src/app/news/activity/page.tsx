@@ -27,6 +27,7 @@ export default function ActivityListPage() {
       title="活动招募"
       items={items}
       emptyText="暂无活动"
+      backHref="/news"
     />
   );
 }

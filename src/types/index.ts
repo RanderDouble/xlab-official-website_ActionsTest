@@ -48,6 +48,7 @@ export interface LabNews {
 // 媒体报道
 export interface MediaQuote {
   id: number;
+  title: string;
   content: string;
   mediaName: string;
   date: string; // YYYY-MM-DD

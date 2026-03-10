@@ -14,7 +14,7 @@ const navItems: NavItem[] = [
     children: [
       { label: "科学研究", href: "/ecosystem/research" },
       { label: "工程实践", href: "/ecosystem/engineering" },
-      { label: "创新生态", href: "/ecosystem/innovation" },
+      { label: "创业生态", href: "/ecosystem/innovation" },
       { label: "生活在Lab", href: "/ecosystem/life" },
     ],
   },

@@ -7,7 +7,7 @@ import { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "新闻动态 - X-Lab 浙江大学启真交叉学科创新创业实验室",
-  description: "了解X-Lab最新动态、活动招募、创新成果和媒体关注。探索实验室的创新生态与跨学科协作。",
+  description: "了解X-Lab最新动态、活动招募、创新成果和媒体关注。探索实验室的创业生态与跨学科协作。",
 };
 
 export default function NewsPage() {

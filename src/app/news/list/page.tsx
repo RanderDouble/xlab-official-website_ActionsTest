@@ -87,11 +87,22 @@ export default async function LatestListPage({
       {/* === 顶部标题栏 - 与ListPage一致：居中，灰色箭头 › === */}
       <div className="sticky top-0 z-20 w-full bg-white/95 shadow-[0px_1px_10px_1px_rgba(20,155,255,0.12)] backdrop-blur-[2px]">
         <div className="flex justify-center">
-          {/* Header 左侧占位：保持与下方一致 */}
-          <div
-            className={`hidden shrink-0 ${sidebarWidthClass} block`}
-            aria-hidden="true"
-          />
+          {/* Header 左侧返回按钮：与下方左侧宽度保持一致 */}
+          <div className={`shrink-0 ${sidebarWidthClass} flex items-center`}>
+            <Link
+              href="/news"
+              aria-label="返回新闻页"
+              className="inline-flex h-[32px] items-center gap-1 pl-1 text-[14px] font-medium text-[#646464] transition-colors hover:text-[#0071ef]"
+            >
+              <span
+                aria-hidden="true"
+                className="translate-x-0.5 -translate-y-[1.5px] text-[18px] leading-none"
+              >
+                ‹
+              </span>
+              <span>返回</span>
+            </Link>
+          </div>
 
           <div
             className={`flex h-[54px] w-full ${mainContentMaxWidth} items-center justify-center`}
