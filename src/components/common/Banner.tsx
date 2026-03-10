@@ -12,22 +12,16 @@ export function Banner({
   alt = "banner",
 }: BannerProps) {
   return (
-    <div className="w-full flex justify-center px-6 my-10 relative">
-      <div
-        className={`relative overflow-hidden`}
-        style={{
-          width: "1320px",
-          height: "567px",
-        }}
-      >
-        <Image
-          src={imageSrc}
-          alt={alt}
-          fill
-          className="object-cover"
-          priority // 让图片优先加载
-        />
-      </div>
+    <div className="w-full my-10">
+      <Image
+        src={imageSrc}
+        alt={alt}
+        width={0}
+        height={0}
+        sizes="100vw"
+        className={`w-full h-auto ${className}`}
+        priority
+      />
     </div>
   );
 }

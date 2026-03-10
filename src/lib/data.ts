@@ -1056,8 +1056,8 @@ export const FEATURED_MENTOR: Mentor = {
   id: 0,
   name: "邢以群",
   description:
-    "启真交叉学科创新创业实验室责任教授，浙江大学管理学院教授,浙江大学组织与战略研究所副所长，浙江大学健康产业创新研究中心主任，浙江大学医疗健康产业MBA项目学术主任，浙江大学管理学教研中心负责人",
-  imageUrl: "/assets/home/resources/邢以群.png",
+    "启真交叉学科创新创业实验室责任教授, 浙江大学管理学院教授",
+  imageUrl: "/assets/home/resources/xyq.png",
 };
 
 export const ACADEMIC_MENTORS: Mentor[] = [
@@ -1274,12 +1274,12 @@ export const INDUSTRY_MENTORS: Mentor[] = [
     description: "浙江大学国家大学科技园党总支副书记、总经理",
     imageUrl: "/assets/home/resources/ly.png",
   },
-  {
-    id: 103,
-    name: "卢翰霖",
-    description: "宁波市镇海区宁波九龙机械制造有限公司总经理、镇海青企协会长",
-    imageUrl: "/assets/home/resources/lhl.png",
-  },
+  // {
+  //   id: 103,
+  //   name: "卢翰霖",
+  //   description: "宁波市镇海区宁波九龙机械制造有限公司总经理、镇海青企协会长",
+  //   imageUrl: "/assets/home/resources/lhl.png",
+  // },
   {
     id: 104,
     name: "石锦澎",

@@ -6,8 +6,11 @@ import { Footer } from "@/components/common/Footer";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "XLab 官方网站",
-  description: "XLab 官方网站 - 官网框架与首页静态骨架",
+  title: "X-Lab 浙江大学启真交叉学科创新创业实验室",
+  description: "X-Lab 浙江大学启真交叉学科创新创业实验室官方网站",
+  icons: {
+    icon: "/logo.svg",
+  },
 };
 
 export default function RootLayout({
