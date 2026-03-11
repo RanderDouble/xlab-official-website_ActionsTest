@@ -865,7 +865,7 @@ export const HOME_BANNERS: Banner[] = [
   {
     id: 1,
     label: "Banner 1",
-    link: "#",
+    link: "https://mp.weixin.qq.com/s/C2bOxVidwBm-jnudioNTTQ",
     imageUrl: "/assets/home/banner/纳新进行时.svg",
   },
   {
@@ -877,7 +877,7 @@ export const HOME_BANNERS: Banner[] = [
   {
     id: 3,
     label: "Banner 3",
-    link: "#",
+    link: "https://mp.weixin.qq.com/s/C2bOxVidwBm-jnudioNTTQ",
     imageUrl: "/assets/home/banner/纳新进行时.svg",
   },
   {

@@ -90,13 +90,21 @@ export function Header() {
             )}
           </nav>
 
-          <img
-            src="/assets/header/XShare.svg"
-            alt="XShare"
-            width="160"
-            height="160"
-            className="cursor-pointer ml-6 -mr-4 -mt-1"
-          />
+          <a
+            href="https://zju-xlab.feishu.cn/wiki/AkHJw4DiWi2I5mkyLvRccNIcnBf?open_in_browser=true"
+            target="_blank"
+            rel="noreferrer"
+            className="ml-6 -mr-4 -mt-1 block"
+            aria-label="打开 X-share"
+          >
+            <img
+              src="/assets/header/XShare.svg"
+              alt="XShare"
+              width="160"
+              height="160"
+              className="cursor-pointer"
+            />
+          </a>
         </div>
       </div>
 
