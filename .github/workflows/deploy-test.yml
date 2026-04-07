@@ -34,11 +34,11 @@ jobs:
         uses: burnett01/rsync-deployments@6.0.0
         with:
           switches: -avzr --delete --progress
+          path: .next/
           remote_path: /tmp/official-website-test
-          remote: ${{ secrets.TEST_SERVER_USER }}@${{ secrets.TEST_SERVER_HOST }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          source: .next/
-
+          remote_host: ${{ secrets.TEST_SERVER_HOST }}
+          remote_user: ${{ secrets.TEST_SERVER_USER }}
+          remote_key: ${{ secrets.SSH_PRIVATE_KEY }}
       - name: SSH 验证
         uses: appleboy/ssh-action@master
         with:
