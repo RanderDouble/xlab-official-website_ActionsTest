@@ -26,22 +26,25 @@ jobs:
         env:
           NODE_ENV: production
 
-      - name: 测试输出
-        run: echo "构建完成！"
-
       - name: 同步到服务器
         uses: burnett01/rsync-deployments@6.0.0
         with:
           switches: -avzr --delete --progress
-          path: .next/
+          path: .
           remote_path: /tmp/official-website-test
           remote_host: ${{ secrets.TEST_SERVER_HOST }}
           remote_user: ${{ secrets.TEST_SERVER_USER }}
           remote_key: ${{ secrets.SSH_PRIVATE_KEY }}
-      - name: SSH 验证
+          exclude: node_modules/.cache
+
+      - name: 安装依赖并启动 PM2
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.TEST_SERVER_HOST }}
           username: ${{ secrets.TEST_SERVER_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          script: ls -la /tmp/official-website-test/
+          script: |
+            cd /tmp/official-website-test
+            npm ci --production
+            pm2 delete official-website-test || true
+            pm2 start npm --name official-website-test -- start
