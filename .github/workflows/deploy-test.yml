@@ -2,7 +2,7 @@ name: 测试部署到我的服务器
 
 on:
 push:
-  branches: [main]
+  branches: [dev]
 
 env:
 TEST_SERVER_HOST: ${{ secrets.TEST_SERVER_HOST }}
