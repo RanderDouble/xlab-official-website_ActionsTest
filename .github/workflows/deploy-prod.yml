@@ -11,14 +11,10 @@ permissions:
   contents: write
 
 jobs:
-  # 备份：在服务器上打包当前版本
   backup:
     runs-on: ubuntu-latest
-    outputs:
-      backup_file: ${{ steps.backup.outputs.backup_file }}
     steps:
       - name: 备份当前版本
-        id: backup
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.TEST_SERVER_HOST }}
@@ -28,10 +24,9 @@ jobs:
             mkdir -p /backup
             BACKUP_FILE="/backup/app-prod-back-$(date +%Y%m%d-%H%M%S).tar.gz"
             cd /opt/app/prod
-            tar -czf $BACKUP_FILE .
-            echo "backup_file=$BACKUP_FILE" >> $GITHUB_OUTPUT
+            tar -czf "$BACKUP_FILE" .
+            ls -lt /backup/app-prod-back-*.tar.gz | head -1
 
-  # 部署：在 Actions 上构建，同步到服务器，部署应用
   deploy:
     needs: backup
     runs-on: ubuntu-latest
@@ -101,16 +96,11 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
             echo "部署失败，开始回滚..."
-            BACKUP_FILE="${{ needs.backup.outputs.backup_file }}"
+            BACKUP_FILE=$(ls -t /backup/app-prod-back-*.tar.gz | head -1)
 
-            # 停止当前服务
-            pm2 stop app-prod
-
-            # 从备份恢复
             cd /opt/app/prod
-            tar -xzf $BACKUP_FILE -C .
+            tar -xzf "$BACKUP_FILE" -C .
 
-            # 启动服务
             export NVM_DIR="$HOME/.nvm"
             [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
             if pm2 describe app-prod >/dev/null 2>&1; then
