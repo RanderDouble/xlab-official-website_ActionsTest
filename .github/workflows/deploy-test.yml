@@ -1,4 +1,4 @@
-name: 测试部署到阿里云服务器
+name: Deploy to Test
 
 on:
   push:
@@ -7,7 +7,6 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-
     steps:
       - name: 检出代码
         uses: actions/checkout@v4
@@ -23,21 +22,18 @@ jobs:
 
       - name: 构建
         run: npm run build
-        env:
-          NODE_ENV: production
 
-      - name: 同步到服务器
+      - name: 同步到服务器（测试环境）
         uses: burnett01/rsync-deployments@6.0.0
         with:
-          switches: -avzr --delete --progress
+          switches: -avzr --delete --exclude=node_modules
           path: .
-          remote_path: /tmp/official-website-test
+          remote_path: /opt/app/test
           remote_host: ${{ secrets.TEST_SERVER_HOST }}
           remote_user: ${{ secrets.TEST_SERVER_USER }}
           remote_key: ${{ secrets.SSH_PRIVATE_KEY }}
-          exclude: node_modules/.cache
 
-      - name: 安装依赖并启动 PM2
+      - name: 部署应用
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.TEST_SERVER_HOST }}
@@ -46,7 +42,10 @@ jobs:
           script: |
             export NVM_DIR="$HOME/.nvm"
             [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-            cd /tmp/official-website-test
+            cd /opt/app/test
             npm ci --production
-            pm2 delete official-website-test || true
-            pm2 start npm --name official-website-test -- start
+            if pm2 describe app-test >/dev/null 2>&1; then
+              pm2 restart app-test
+            else
+              pm2 start npm --name app-test -- start
+            fi

@@ -1,0 +1,44 @@
+name: Manual Rollback
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 回滚到指定版本（留空则回滚到上一个备份）
+        required: false
+
+jobs:
+  rollback:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 回滚生产环境
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.TEST_SERVER_HOST }}
+          username: ${{ secrets.TEST_SERVER_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            # 停止当前服务
+            pm2 stop app-prod
+
+            # 选择备份文件
+            if [ -n "${{ inputs.version }}" ]; then
+              BACKUP_FILE="/backup/app-prod-back-${{ inputs.version }}.tar.gz"
+            else
+              BACKUP_FILE=$(ls -t /backup/app-prod-back-*.tar.gz | head -1)
+            fi
+
+            # 从备份恢复
+            cd /opt/app/prod
+            tar -xzf $BACKUP_FILE -C .
+
+            # 重启服务
+            export NVM_DIR="$HOME/.nvm"
+            [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+            if pm2 describe app-prod >/dev/null 2>&1; then
+              pm2 restart app-prod
+            else
+              pm2 start npm --name app-prod -- start
+            fi
+
+            echo "已回滚到 $BACKUP_FILE"
