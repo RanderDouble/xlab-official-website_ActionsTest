@@ -68,16 +68,34 @@ jobs:
           host: ${{ secrets.TEST_SERVER_HOST }}
           username: ${{ secrets.TEST_SERVER_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
+          command_timeout: 20m
           script: |
             export NVM_DIR="$HOME/.nvm"
             [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+
+            echo "node: $(node -v)"
+            echo "npm: $(npm -v)"
+            echo "pm2: $(pm2 -v)"
+
             cd /opt/app/prod
-            npm ci --production
+            echo "pwd: $(pwd)"
+            echo "start npm ci"
+            npm ci --omit=dev
+            echo "npm ci done"
+
             if pm2 describe app-prod >/dev/null 2>&1; then
+              echo "restart pm2 app-prod"
               pm2 restart app-prod
             else
+              echo "start pm2 app-prod"
               pm2 start npm --name app-prod -- start
             fi
+
+            echo "deploy done"
+            pm2 status app-prod
+            pm2 logs app-prod --lines 20 --nostream
+            curl -I http://127.0.0.1:3001 || true
+            curl -I http://127.0.0.1 || true
 
       - name: 健康检查（可能失败，需要回滚）
         id: health_check
