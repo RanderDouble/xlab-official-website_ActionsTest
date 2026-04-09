@@ -86,6 +86,9 @@ jobs:
             echo "deploy done"
             pm2 status app-prod
 
+            echo "模拟部署失败"
+            exit 1
+
       - name: 健康检查（可能失败，需要回滚）
         id: health_check
         continue-on-error: true
