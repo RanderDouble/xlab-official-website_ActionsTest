@@ -39,17 +39,32 @@ jobs:
           host: ${{ secrets.TEST_SERVER_HOST }}
           username: ${{ secrets.TEST_SERVER_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
+          command_timeout: 20m
           script: |
             export NVM_DIR="$HOME/.nvm"
             [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+
+            echo "node: $(node -v)"
+            echo "npm: $(npm -v)"
+            echo "pm2: $(pm2 -v)"
+
             cd /opt/app/test
+            echo "pwd: $(pwd)"
+            echo "start npm ci"
             npm ci --omit=dev
+            echo "npm ci done"
+
             if pm2 describe app-test >/dev/null 2>&1; then
+              echo "restart pm2 app-test"
               PORT=3000 pm2 restart app-test --update-env
             else
+              echo "start pm2 app-test"
               PORT=3000 pm2 start npm --name app-test -- start
             fi
+
+            echo "pm2 done"
             pm2 status app-test
             curl -I http://127.0.0.1:3000
             pm2 logs app-test --lines 20 --nostream
             echo "test deploy done"
+            exit 0

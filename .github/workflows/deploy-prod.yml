@@ -7,42 +7,12 @@ on:
         description: 版本号（如 v1.2.3）
         required: true
 
-permissions:
-  contents: write
-
 jobs:
-  backup:
-    runs-on: ubuntu-latest
-    steps:
-      - name: 备份当前版本
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.TEST_SERVER_HOST }}
-          username: ${{ secrets.TEST_SERVER_USER }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          command_timeout: 20m
-          script: |
-            mkdir -p /backup
-            BACKUP_FILE="/backup/app-prod-back-$(date +%Y%m%d-%H%M%S).tar"
-            cd /opt/app/prod
-            echo "pwd: $(pwd)"
-            du -sh . || true
-            echo "start backup: $BACKUP_FILE"
-            tar \
-              --exclude=.next/cache \
-              --exclude=node_modules \
-              --exclude=.git \
-              -cf "$BACKUP_FILE" .
-            echo "backup done"
-            ls -lh "$BACKUP_FILE"
-            ls -lt /backup/app-prod-back-*.tar | head -1
-
   deploy:
-    needs: backup
     runs-on: ubuntu-latest
     environment:
       name: production
-      url: https://example.com
+      url: http://example.com
     steps:
       - uses: actions/checkout@v4
 
@@ -59,6 +29,19 @@ jobs:
         run: npm run build
         env:
           NODE_ENV: production
+
+      - name: 备份当前版本到 prod-prev
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.TEST_SERVER_HOST }}
+          username: ${{ secrets.TEST_SERVER_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          command_timeout: 10m
+          script: |
+            mkdir -p /opt/app/prod-prev
+            echo "start backup to prod-prev"
+            rsync -a --delete /opt/app/prod/ /opt/app/prod-prev/
+            echo "backup done"
 
       - name: 同步到服务器（生产环境）
         uses: burnett01/rsync-deployments@6.0.0
@@ -88,7 +71,6 @@ jobs:
             echo "pm2: $(pm2 -v)"
 
             cd /opt/app/prod
-            echo "pwd: $(pwd)"
             echo "start npm ci"
             npm ci --omit=dev
             echo "npm ci done"
@@ -103,8 +85,6 @@ jobs:
 
             echo "deploy done"
             pm2 status app-prod
-            pm2 logs app-prod --lines 20 --nostream
-            curl -I http://127.0.0.1:3001
 
       - name: 健康检查（可能失败，需要回滚）
         id: health_check
@@ -116,7 +96,7 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
             for i in {1..30}; do
-              curl -f http://127.0.0.1:3001/ && exit 0 || sleep 2
+              curl -sf http://127.0.0.1:3001/ && exit 0 || sleep 2
             done
             exit 1
 
@@ -127,12 +107,11 @@ jobs:
           host: ${{ secrets.TEST_SERVER_HOST }}
           username: ${{ secrets.TEST_SERVER_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
+          command_timeout: 10m
           script: |
             echo "部署失败，开始回滚..."
-            BACKUP_FILE=$(ls -t /backup/app-prod-back-*.tar | head -1)
-
-            cd /opt/app/prod
-            tar -xf "$BACKUP_FILE" -C .
+            rsync -a --delete /opt/app/prod-prev/ /opt/app/prod/
+            echo "文件回滚完成"
 
             export NVM_DIR="$HOME/.nvm"
             [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
@@ -144,20 +123,10 @@ jobs:
 
             echo "回滚完成，已恢复到上一个版本"
 
-      - name: 创建 Git 标签
-        if: ${{ success() }}
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git tag -a ${{ inputs.version }} -m "Release ${{ inputs.version }}"
-          git push origin ${{ inputs.version }}
-
       - name: 部署成功通知
-        if: ${{ success() }}
-        run: |
-          echo "生产环境部署成功！版本：${{ inputs.version }}"
+        if: ${{ steps.deploy.outcome == 'success' && steps.health_check.outcome == 'success' }}
+        run: echo "生产环境部署成功！版本：${{ inputs.version }}"
 
       - name: 部署失败通知
         if: ${{ steps.deploy.outcome == 'failure' || steps.health_check.outcome == 'failure' }}
-        run: |
-          echo "生产环境部署失败！已自动回滚到上一个版本"
+        run: echo "生产环境部署失败！已自动回滚到上一个版本"
