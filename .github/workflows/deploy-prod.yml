@@ -20,12 +20,22 @@ jobs:
           host: ${{ secrets.TEST_SERVER_HOST }}
           username: ${{ secrets.TEST_SERVER_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
+          command_timeout: 20m
           script: |
             mkdir -p /backup
-            BACKUP_FILE="/backup/app-prod-back-$(date +%Y%m%d-%H%M%S).tar.gz"
+            BACKUP_FILE="/backup/app-prod-back-$(date +%Y%m%d-%H%M%S).tar"
             cd /opt/app/prod
-            tar -czf "$BACKUP_FILE" .
-            ls -lt /backup/app-prod-back-*.tar.gz | head -1
+            echo "pwd: $(pwd)"
+            du -sh . || true
+            echo "start backup: $BACKUP_FILE"
+            tar \
+              --exclude=.next/cache \
+              --exclude=node_modules \
+              --exclude=.git \
+              -cf "$BACKUP_FILE" .
+            echo "backup done"
+            ls -lh "$BACKUP_FILE"
+            ls -lt /backup/app-prod-back-*.tar | head -1
 
   deploy:
     needs: backup
@@ -53,7 +63,7 @@ jobs:
       - name: 同步到服务器（生产环境）
         uses: burnett01/rsync-deployments@6.0.0
         with:
-          switches: -avzr --delete --exclude=node_modules
+          switches: -avzr --delete --exclude=node_modules --exclude=.git --exclude=.github
           path: .
           remote_path: /opt/app/prod
           remote_host: ${{ secrets.TEST_SERVER_HOST }}
@@ -114,10 +124,10 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
             echo "部署失败，开始回滚..."
-            BACKUP_FILE=$(ls -t /backup/app-prod-back-*.tar.gz | head -1)
+            BACKUP_FILE=$(ls -t /backup/app-prod-back-*.tar | head -1)
 
             cd /opt/app/prod
-            tar -xzf "$BACKUP_FILE" -C .
+            tar -xf "$BACKUP_FILE" -C .
 
             export NVM_DIR="$HOME/.nvm"
             [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"

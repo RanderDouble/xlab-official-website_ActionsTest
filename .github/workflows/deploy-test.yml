@@ -26,7 +26,7 @@ jobs:
       - name: 同步到服务器（测试环境）
         uses: burnett01/rsync-deployments@6.0.0
         with:
-          switches: -avzr --delete --exclude=node_modules
+          switches: -avzr --delete --exclude=node_modules --exclude=.git --exclude=.github
           path: .
           remote_path: /opt/app/test
           remote_host: ${{ secrets.TEST_SERVER_HOST }}
