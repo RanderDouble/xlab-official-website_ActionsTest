@@ -95,25 +95,30 @@ jobs:
 
             if pm2 describe app-prod >/dev/null 2>&1; then
               echo "restart pm2 app-prod"
-              pm2 restart app-prod
+              PORT=3001 pm2 restart app-prod --update-env
             else
               echo "start pm2 app-prod"
-              pm2 start npm --name app-prod -- start
+              PORT=3001 pm2 start npm --name app-prod -- start
             fi
 
             echo "deploy done"
             pm2 status app-prod
             pm2 logs app-prod --lines 20 --nostream
-            curl -I http://127.0.0.1:3001 || true
-            curl -I http://127.0.0.1 || true
+            curl -I http://127.0.0.1:3001
 
       - name: 健康检查（可能失败，需要回滚）
         id: health_check
         continue-on-error: true
-        run: |
-          for i in {1..30}; do
-            curl -f http://${{ secrets.TEST_SERVER_HOST }}/ && break || sleep 2
-          done
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.TEST_SERVER_HOST }}
+          username: ${{ secrets.TEST_SERVER_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            for i in {1..30}; do
+              curl -f http://127.0.0.1:3001/ && exit 0 || sleep 2
+            done
+            exit 1
 
       - name: 回滚
         if: ${{ steps.deploy.outcome == 'failure' || steps.health_check.outcome == 'failure' }}
@@ -132,9 +137,9 @@ jobs:
             export NVM_DIR="$HOME/.nvm"
             [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
             if pm2 describe app-prod >/dev/null 2>&1; then
-              pm2 restart app-prod
+              PORT=3001 pm2 restart app-prod --update-env
             else
-              pm2 start npm --name app-prod -- start
+              PORT=3001 pm2 start npm --name app-prod -- start
             fi
 
             echo "回滚完成，已恢复到上一个版本"

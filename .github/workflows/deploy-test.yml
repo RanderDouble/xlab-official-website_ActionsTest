@@ -43,9 +43,13 @@ jobs:
             export NVM_DIR="$HOME/.nvm"
             [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
             cd /opt/app/test
-            npm ci --production
+            npm ci --omit=dev
             if pm2 describe app-test >/dev/null 2>&1; then
-              pm2 restart app-test
+              PORT=3000 pm2 restart app-test --update-env
             else
-              pm2 start npm --name app-test -- start
+              PORT=3000 pm2 start npm --name app-test -- start
             fi
+            pm2 status app-test
+            curl -I http://127.0.0.1:3000
+            pm2 logs app-test --lines 20 --nostream
+            echo "test deploy done"
